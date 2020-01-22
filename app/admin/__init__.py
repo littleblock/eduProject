@@ -7,4 +7,5 @@ from flask import Blueprint
 
 admin = Blueprint("admin", __name__)
 
-import app.admin.stu_view
+import app.admin.stu_info_view
+import app.admin.stu_ques_view
