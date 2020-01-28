@@ -3,9 +3,25 @@
 # @Time: 2020/1/21 19:53
 
 # 配置好app中的__init.py__ 后，在这里导入db
-# from app import db
-
+from app import db
 from datetime import datetime
+
+'''
+from flask import Flask
+from flask_sqlalchemy import SQLAlchemy
+
+app = Flask(__name__)
+# 开启debug模式
+app.debug = True
+# 数据库配置
+# qixuanye的本地数据库
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+# whc的本地数据库
+# yj的本地数据库
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
+db = SQLAlchemy(app)
+'''
 
 # 错题表模型
 class ques_table(db.Model):
@@ -32,6 +48,9 @@ class ques_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
+    def __repr__(self):
+        return "<ques_table %r>" % self.name
+
 # 做题记录模型
 class ques_review(db.Model):
     # 定义表名
@@ -54,4 +73,10 @@ class ques_review(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<ques_review %r>" % self.name
+
+if __name__ == "__main__":
+    db.drop_all()
 
