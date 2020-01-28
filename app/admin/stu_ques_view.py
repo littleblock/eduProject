@@ -4,6 +4,7 @@
 
 from . import admin
 
+
 # 测试,访问地址为http://127.0.0.1:5000/admin/test2
 
 @admin.route("/test2")
