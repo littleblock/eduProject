@@ -9,11 +9,14 @@ app = Flask(__name__)
 # 开启debug模式
 app.debug = True
 # 数据库配置
-'''
-app.config["SQLALCHEMY_DATABASE_URI"] = 
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = 
+# qixuanye的本地数据库
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+# whc的本地数据库
+# yj的本地数据库
+
+app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
-'''
+
 
 app.config["SQLALCHEMY_DATABASE_URI"] = True
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
