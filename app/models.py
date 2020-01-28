@@ -7,34 +7,51 @@
 
 from datetime import datetime
 
+# 错题表模型
 class ques_table(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_table'
-    # 定义字段
-    # db.Column 表示是一个字段
+    # 主键
     id = db.Column(db.BigInteger, primary_key = True)
+    # 学生编号
     student_id = db.Column(db.Integer, unique = True)
+    # 问题编号
     ques_id = db.Column(db.Integer, unique = True)
+    # 题干信息
     ques_info = db.Column(db.String(100), nullable = False)
+    # 问题答案
     ques_answer = db.Column(db.String(100), nullable = False)
-    creator = db.Column(db.String(50), nullable = False)
-    create_time = db.Column(db.DateTime, nullable = False)
-    last_modify_user = db.Column(db.Integer, unique = True)
-    last_modify_time = db.Column(db.DateTime, nullable = False)
-    is_del = db.Column(db.Integer, nullable = True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
+# 做题记录模型
 class ques_review(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_review'
-    # 定义字段
-    # db.Column 表示是一个字段
+    # 主键
     id = db.Column(db.BigInteger, primary_key = True)
+    # 问题编号
     ques_id = db.Column(db.Integer, unique = True)
+    # 是否做对 1为做对 0为做错
     whether_right = db.Column(db.String(1))
+    # 做题时间
     do_time = db.Column(db.DateTime, unique = True)
-    creator = db.Column(db.String(50), nullable = False)
-    create_time = db.Column(db.DateTime, nullable = False)
-    last_modify_user = db.Column(db.Integer, unique = True)
-    last_modify_time = db.Column(db.DateTime, nullable = False)
-    is_del = db.Column(db.Integer, nullable = True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
