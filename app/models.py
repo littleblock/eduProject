@@ -102,6 +102,9 @@ class info_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
+    def __repr__(self):
+        return "<info_table %r>" % self.name
+
 # 学生成绩信息表模型
 class score_table(db.Model):
     # 定义表名
@@ -128,6 +131,9 @@ class score_table(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<score_table %r>" % self.name
 
 if __name__ == "__main__":
     db.drop_all()
