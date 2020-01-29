@@ -17,11 +17,6 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 
-
-app.config["SQLALCHEMY_DATABASE_URI"] = True
-app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
-db = SQLAlchemy(app)
-
 # 创建蓝图对象
 from app.admin import admin as admin_blueprint
 
