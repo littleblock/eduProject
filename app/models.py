@@ -17,6 +17,7 @@ app.debug = True
 # qixuanye的本地数据库
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 # whc的本地数据库
+
 # yj的本地数据库
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
@@ -94,11 +95,11 @@ class info_table(db.Model):
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     # 最后修改人
     last_modify_user = db.Column(db.String(128), nullable=False)
     # 最后修改时间
-    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    last_modify_time = db.Column(db.DateTime, default=datetime.datetime.now())
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
@@ -110,7 +111,7 @@ class score_table(db.Model):
     # 定义表名
     __tablename__ = 'stu_socre_info'
     # 主键
-    id = db.Column(db.BigInteger, primary_key = True, unique = True, autoincrement=True)
+    score_id = db.Column(db.BigInteger, primary_key = True, unique = True, autoincrement=True)
     # 学生编号，与上表的id对应，作为上表外键
     stu_id = db.Column(db.Integer, db.ForeignKey('stu_basic_info.id'), nullable=False)
     # 学生录入的考试成绩
@@ -124,11 +125,11 @@ class score_table(db.Model):
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
-    create_time = db.Column(db.DateTime, default=datetime.now)
+    create_time = db.Column(db.DateTime, default=datetime.datetime.now())
     # 最后修改人
     last_modify_user = db.Column(db.String(128), nullable=False)
     # 最后修改时间
-    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    last_modify_time = db.Column(db.DateTime, default=datetime.datetime.now())
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
