@@ -1,3 +1,5 @@
+{% extends "admin/layout.html" %}
+{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -5,7 +7,7 @@
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- 链接bootstrap的css文件-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css')}}">
-    <title>鲁班平台自诊断及用户智能答疑系统</title>
+    <title>用户管理系统</title>
     <!-- 设置透明度 -->
     <style>
         .clear{background-color: rgba(255, 255, 255, 0.95);}
@@ -13,13 +15,17 @@
         .navClear{opacity: 0.7}
     </style>
     <h1>  学生错题录入
-    <p>
-    错题题干：<br>  <textarea name="textfield3" cols="40" rows="5"></textarea>
-    </p>
-    <p>
-    <input type="submit" name="提交" value="提 交">
-    <input type="reset" name="重写" value="重 写">
-    </p>
+        <p>错题题干：<br> </p>
+            <form method="post">
+                <div class="form-group">
+        <label>题干信息</label>
+                    {{ form.code }}
+                </div>
+                <p>
+                    <input type="submit" name="提交" value="提 交">
+                    <input type="reset" name="重写" value="重 写"></p>
+                {{ form.submit }}
+                {{ form.csrf_token }}
+            </form>
     </h1>
 </head>
-
