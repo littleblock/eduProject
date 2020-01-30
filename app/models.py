@@ -6,7 +6,9 @@
 from app import db
 from datetime import datetime
 
-'''
+# 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
+# 生成数据表后，记得再重新注释上
+"""
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,22 +23,22 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
-'''
+"""
 
 # 错题表模型
 class ques_table(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_table'
     # 主键
-    id = db.Column(db.BigInteger, primary_key = True)
+    id = db.Column(db.BigInteger, primary_key=True)
     # 学生编号
-    student_id = db.Column(db.Integer, unique = True)
+    student_id = db.Column(db.Integer, unique=True)
     # 问题编号
-    ques_id = db.Column(db.Integer, unique = True)
+    ques_id = db.Column(db.Integer, unique=True)
     # 题干信息
-    ques_info = db.Column(db.String(100), nullable = False)
+    ques_info = db.Column(db.String(100), nullable=False)
     # 问题答案
-    ques_answer = db.Column(db.String(100), nullable = False)
+    ques_answer = db.Column(db.String(100), nullable=False)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -51,18 +53,19 @@ class ques_table(db.Model):
     def __repr__(self):
         return "<ques_table %r>" % self.name
 
+
 # 做题记录模型
 class ques_review(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_review'
     # 主键
-    id = db.Column(db.BigInteger, primary_key = True)
+    id = db.Column(db.BigInteger, primary_key=True)
     # 问题编号
-    ques_id = db.Column(db.Integer, unique = True)
+    ques_id = db.Column(db.Integer, unique=True)
     # 是否做对 1为做对 0为做错
     whether_right = db.Column(db.String(1))
     # 做题时间
-    do_time = db.Column(db.DateTime, unique = True)
+    do_time = db.Column(db.DateTime, unique=True)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -77,20 +80,22 @@ class ques_review(db.Model):
     def __repr__(self):
         return "<ques_review %r>" % self.name
 
+
+'''
 # 学生基础信息表模型
 class info_table(db.Model):
     # 定义表名
     __tablename__ = 'stu_basic_info'
     # 主键
-    id = db.Column(db.BigInteger, primary_key = True, unique = True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True, unique=True, autoincrement=True)
     # 学生姓名
-    stu_name = db.Column(db.String(128), nullable = False)
+    stu_name = db.Column(db.String(128), nullable=False)
     # 学生学校
-    stu_school = db.Column(db.String(100), nullable = False)
+    stu_school = db.Column(db.String(100), nullable=False)
     # 创建账户时录入的年级
-    creat_class = db.Column(db.Integer, nullable = False)
+    creat_class = db.Column(db.Integer, nullable=False)
     # 学生当前年级
-    stu_class = db.Column(db.Integer, nullable = False)
+    stu_class = db.Column(db.Integer, nullable=False)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -105,12 +110,13 @@ class info_table(db.Model):
     def __repr__(self):
         return "<info_table %r>" % self.name
 
+
 # 学生成绩信息表模型
 class score_table(db.Model):
     # 定义表名
     __tablename__ = 'stu_socre_info'
     # 主键
-    id = db.Column(db.BigInteger, primary_key = True, unique = True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True, unique=True, autoincrement=True)
     # 学生编号，与上表的id对应，作为上表外键
     stu_id = db.Column(db.Integer, db.ForeignKey('stu_basic_info.id'), nullable=False)
     # 学生录入的考试成绩
@@ -120,7 +126,7 @@ class score_table(db.Model):
     # 考试类型（月考、期中、期末、模拟考）
     score_exsort = db.Column(db.String(20))
     # 如果考试不属于上述考试类型就为单元名，反之为空
-    exam_info = db.Column(db.String(30), nullable = True)
+    exam_info = db.Column(db.String(30), nullable=True)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -134,7 +140,364 @@ class score_table(db.Model):
 
     def __repr__(self):
         return "<score_table %r>" % self.name
+'''
 
+
+# 学科表
+class subject(db.Model):
+    # 表名
+    __tablename__ = "subject"
+    # id
+    subject_id = db.Column(db.Integer, primary_key=True)
+    # 学科中文名称
+    subject_name = db.Column(db.String(32), nullable=False)
+    # 学科英文名
+    subject_english_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 知识点表外键连接
+    knowledge_basics = db.relationship('knowledge_basic', backref='subject')
+    # 知识点等级表外键连接
+    knowledge_levels = db.relationship('knowledge_basic', backref='subject')
+    # 章节表外键连接
+    chapters = db.relationship('chapter', backref='subject')
+    # 试题表外键连接
+    questions_foreign = db.relationship('questions', backref='subject')
+
+    def __repr__(self):
+        return "<subject %r>" % self.name
+
+
+# 教材版本表
+class edition(db.Model):
+    # 表名
+    __tablename__ = "edition"
+    # id
+    edition_id = db.Column(db.Integer, primary_key=True)
+    # 教材版本名
+    edition_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 章节表外键连接
+    chapters = db.relationship('chapter', backref='edition')
+
+    def __repr__(self):
+        return "<edition %r>" % self.name
+
+
+# 学段名
+class period(db.Model):
+    # 表名
+    __tablename__ = "period"
+    # id
+    period_id = db.Column(db.Integer, primary_key=True)
+    # 学段名
+    period_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 知识点表外键连接
+    knowledge_basics = db.relationship('knowledge_basic', backref='period')
+    # 知识点等级表外键连接
+    knowledge_levels = db.relationship('knowledge_level', backref='period')
+    # 章节表外键连接
+    chapters = db.relationship('chapter', backref='period')
+
+    def __repr__(self):
+        return "<period %r>" % self.name
+
+
+# 年级表
+class grade(db.Model):
+    # 表名
+    __tablename__ = "grade"
+    # id,三位数字表示，学段数字+年级数字+上下学期
+    grade_id = db.Column(db.Integer, primary_key=True,
+                         comment='三位数字表示，学段数字+年级数字+上下学期， 如小学一年级110，小学一年级上111，小学一年级下112，小学五年级下152，初中二年级上221')
+    # 年级名
+    grade_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 章节表外键连接
+    chapters = db.relationship('chapter', backref='grade')
+    # 试题表外键连接
+    questions_foreign = db.relationship('questions', backref='grade')
+
+    def __repr__(self):
+        return "<grade %r>" % self.name
+
+
+# 知识点表
+class knowledge_basic(db.Model):
+    # 表名
+    __tablename__ = "knowledge_basic"
+    # id
+    knowledge_id = db.Column(db.Integer, primary_key=True)
+    # 知识点名称
+    knowledge_name = db.Column(db.String(32), nullable=False)
+    # 关联学科id
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.subject_id'), nullable=False)
+    # 关联学段
+    period_id = db.Column(db.Integer, db.ForeignKey('period.period_id'), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 知识点等级表外键关联
+    knowledge_levels = db.relationship('knowledge_level', backref='knowledge_basic')
+    # 试题知识点关联表外键连接
+    relations = db.relationship('question_knowledge_relation', backref = 'knowledge_basic')
+
+    def __repr__(self):
+        return "<knowledge_basic %r>" % self.name
+
+
+# 知识点等级表
+class knowledge_level(db.Model):
+    # 表名
+    __tablename__ = 'knowledge_level'
+    # id
+    level_id = db.Column(db.Integer, primary_key=True)
+    # 关联知识点表id
+    knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge_basic.knowledge_id'), nullable=False)
+    # 关联学科表id
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.subject_id'), nullable=False)
+    # 关联学段表id
+    period_id = db.Column(db.Integer, db.ForeignKey('period.period_id'), nullable=False)
+    # 一级知识点id
+    level_1_id = db.Column(db.Integer, nullable=False)
+    # 一级知识点名称
+    level_1_name = db.Column(db.String(32), nullable=False)
+    # 二级知识点id，若无为0
+    level_2_id = db.Column(db.Integer)
+    # 二级知识点名称，若无为0
+    level_2_name = db.Column(db.String(32))
+    # 三级知识点id，若无为0
+    level_3_id = db.Column(db.Integer)
+    # 三级知识点名称，若无为0
+    level_3_name = db.Column(db.String(32))
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<knowledge_level %r>" % self.name
+
+
+# 章节表
+class chapter(db.Model):
+    # 表名
+    __tablename__ = 'chapter'
+    # id
+    chapter_id = db.Column(db.Integer, primary_key=True)
+    # 关联学科表id
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.subject_id'), nullable=False)
+    # 关联学段表id
+    period_id = db.Column(db.Integer, db.ForeignKey('period.period_id'), nullable=False)
+    # 关联版本表id
+    edition_id = db.Column(db.Integer, db.ForeignKey('edition.edition_id'), nullable=False)
+    # 关联年级表id
+    grade_id = db.Column(db.Integer, db.ForeignKey('grade.grade_id'), nullable=False)
+    # 章节代码，顺序增加
+    chapter_code = db.Column(db.Integer, nullable=False)
+    # 章节名
+    chapter_name = db.Column(db.String(32), nullable=False)
+    # 一级小节代码，顺序增加，若无则为0
+    unit_code = db.Column(db.Integer, nullable=False)
+    # 一级代码名称，若无则为0
+    unit_name = db.Column(db.String(32), nullable=False)
+    # 二级小节代码，顺序增加，若无则为0
+    section_code = db.Column(db.Integer, nullable=False)
+    # 二级小节名称,若无则为0
+    section_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<chapter %r>" % self.name
+
+
+# 试题表
+class questions(db.Model):
+    # 表名
+    __tablename__ = 'questions'
+    # id
+    ques_id = db.Column(db.BigInteger, primary_key=True)
+    # 试题内容
+    ques_content = db.Column(db.String(2048), nullable=False)
+    # 答案1
+    answer_1 = db.Column(db.String(2048), nullable=False)
+    # 答案2,允许为空“”
+    answer_2 = db.Column(db.String(2048), nullable=False)
+    # 答案3，允许为空“”
+    answer_3 = db.Column(db.String(2048), nullable=False)
+    # 解析，允许为空""
+    ques_analysis = db.Column(db.String(1024), nullable=False)
+    # 识别结果包含知识点
+    ocr_knowledge = db.Column(db.String(512), nullable=False)
+    # ocr识别文字内容
+    ocr_text = db.Column(db.String(1024), nullable=False)
+    # 关联学科表id
+    subject_id = db.Column(db.Integer, db.ForeignKey('subject.subject_id'), nullable=False)
+    # 关联年级表id
+    grade_id = db.Column(db.Integer, db.ForeignKey('grade.grade_id'), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 试题信息表外键连接
+    question_infos = db.relationship('question_info', backref='questions')
+    # 试题知识点关联表外键连接
+    relations = db.relationship('question_knowledge_relation', backref = 'questions')
+
+    def __repr__(self):
+        return "<questions %r>" % self.name
+
+
+# 试题信息表
+class question_info(db.Model):
+    # 表名
+    __tablename__ = 'question_info'
+    # id
+    ques_info_id = db.Column(db.BigInteger, primary_key=True)
+    # 关联questions表id
+    ques_id = db.Column(db.BigInteger, db.ForeignKey('questions.ques_id'), nullable=False)
+    # 试题难度，1-简单，2-中等，3-难题
+    ques_difficulty = db.Column(db.SmallInteger, nullable=False, comment='1-简单，2-中等，3-难题')
+    # 题型，没有则为0
+    type_id = db.Column(db.Integer, db.ForeignKey('question_type.type_id'), nullable=False, default=0)
+    # 题型名称
+    type_name = db.Column(db.String(32), nullable=False)
+    # 题目所属年份
+    ques_year = db.Column(db.String(32), nullable=False)
+    # 题目所属区域
+    ques_area = db.Column(db.String(32), nullable=False)
+    # 题目所属试卷类型,1-期中考试，2-期末考试，3-模考，4-中考真题，5-平时练习，6-单元检测，7-月考
+    ques_paper_type = db.Column(db.SmallInteger, nullable=False,
+                                comment='1-期中考试，2-期末考试，3-模考，4-中考真题，5-平时练习，6-单元检测，7-月考')
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<question_info %r>" % self.name
+
+
+# 题目类型表
+class question_type(db.Model):
+    # 表名
+    __tablename__ = 'question_type'
+    # id
+    type_id = db.Column(db.Integer, primary_key=True)
+    # 题型名称
+    type_name = db.Column(db.String(32), nullable=False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 试题信息表外键连接
+    question_infos = db.relationship('question_info', backref='question_type')
+
+    def __repr__(self):
+        return "<question_type %r>" % self.name
+
+
+# 试题知识点关联表
+class question_knowledge_relation(db.Model):
+    __tablename__ = 'question_knowledge_relation'
+    # id
+    relation_id = db.Column(db.BigInteger, primary_key = True)
+    # 关联试题表id
+    ques_id = db.Column(db.BigInteger, db.ForeignKey('questions.ques_id'), nullable = False)
+    # 关联知识点表id
+    knowledge_id = db.Column(db.Integer, db.ForeignKey('knowledge_basic.knowledge_id'), nullable = False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<question_knowledge_relation %r>" % self.name
+
+'''
 if __name__ == "__main__":
-    db.drop_all()
-
+    # db.drop_all()
+    db.create_all()
+'''
