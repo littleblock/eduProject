@@ -10,7 +10,7 @@ from flask_sqlalchemy import SQLAlchemy
 '''
 错题题目提交
 '''
-class stu_ques_add(FlaskForm):
+class stu_ques_add_form(FlaskForm):
     ques_info = StringField(
         validators = [
             DataRequired("题干不能为空")

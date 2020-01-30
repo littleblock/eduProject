@@ -76,6 +76,8 @@ class ques_review(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 做题记录表外键连接
+    relations = db.relationship('ques_table', backref='ques_review')
 
     def __repr__(self):
         return "<ques_review %r>" % self.name

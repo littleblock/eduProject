@@ -1,5 +1,3 @@
-{% extends "admin/layout.html" %}
-{% block content %}
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -16,16 +14,13 @@
     </style>
     <h1>  学生错题录入
         <p>错题题干：<br> </p>
-            <form method="post">
+            <form method="get">
                 <div class="form-group">
         <label>题干信息</label>
-                    {{ form.code }}
+                    <textarea name="题干信息" cols="40" rows="6"></textarea>
                 </div>
                 <p>
-                    <input type="submit" name="提交" value="提 交">
-                    <input type="reset" name="重写" value="重 写"></p>
-                {{ form.submit }}
-                {{ form.csrf_token }}
+                    <input type="submit" name="提交" value="提 交"></p>
             </form>
     </h1>
 </head>

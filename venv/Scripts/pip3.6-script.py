@@ -1,4 +1,5 @@
 #!D:\e\pycharm\eduProject\venv\Scripts\python.exe
+# -*- coding: utf-8 -*-
 # EASY-INSTALL-ENTRY-SCRIPT: 'pip==19.0.3','console_scripts','pip3.6'
 __requires__ = 'pip==19.0.3'
 import re
