@@ -4,8 +4,6 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, EqualTo
-from app.models import Admin, Function_list
-from flask_sqlalchemy import SQLAlchemy
 
 '''
 错题题目提交

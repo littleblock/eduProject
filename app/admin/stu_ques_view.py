@@ -6,14 +6,14 @@ from . import admin
 from app.models import ques_table, ques_review
 from datetime import datetime
 from flask import render_template
-from stu_form.py import stu_ques_add_form
+from .stu_form import stu_ques_add_form
 
 
 # 测试,访问地址为http://127.0.0.1:5000/admin/test2
 
 @admin.route("/ques_input")
 def ques_input():
-    form = function_add_form()
+    form = stu_ques_add_form()
     if form.validate_on_submit():
         data = form.data
         # 获取用户名
