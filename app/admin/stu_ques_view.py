@@ -6,23 +6,26 @@ from . import admin
 from app.models import ques_table, ques_review
 from datetime import datetime
 from flask import render_template
-
+from .stu_form import stu_ques_add_form
 
 
 # 测试,访问地址为http://127.0.0.1:5000/admin/test2
 
 @admin.route("/ques_input")
 def ques_input():
+    form = stu_ques_add_form()
+    if form.validate_on_submit():
+        data = form.data
+        # 获取用户名
+        user = session["user"]
     # 判断该错题是否在在错题表中
-    '''
     if (ques_table_exit("timubianhao")):
         # 错题存在 插入记录
         review_in("timubianhao", "1")
     else:
     # 错题不存在 创建错题及其记录
-        create_ques_table("xuesheng1", "timubianhao", "题干", "答案", "whc")
+        create_ques_table("xuesheng1", "timubianhao", data["ques_info"], "答案", "whc")
         create_ques_review("timubianhao", "1", )
-    '''
     return render_template("/admin/stu_ques_add.html")
 
 
