@@ -3,7 +3,7 @@
 # @Time: 2020/1/22 10:52
 
 from . import admin
-from app.models import ques_table, ques_review
+from app.models import wrong_ques_table, wrong_ques_review
 from datetime import datetime
 from flask import render_template
 from .stu_form import stu_ques_add_form

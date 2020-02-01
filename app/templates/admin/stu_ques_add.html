@@ -1,3 +1,4 @@
+<html>
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"
@@ -6,21 +7,19 @@
     <!-- 链接bootstrap的css文件-->
     <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css')}}">
     <title>用户管理系统</title>
-    <!-- 设置透明度 -->
-    <style>
-        .clear{background-color: rgba(255, 255, 255, 0.95);}
-        .listClear{background-color: rgba(255, 255, 255, 0.2);}
-        .navClear{opacity: 0.7}
-    </style>
-    <h1>  学生错题录入
-        <p>错题题干：<br> </p>
-            <form method="post">
-                <div class="form-group">
-        <label>题干信息</label>
-                    <textarea name="题干信息" cols="40" rows="6"></textarea>
-                </div>
+</head>
+<body>
+    <h1>  学生错题录入</h1>
+    <p>错题题干：<br> </p>
+    <form method="post">
+        <div class="form-group">
+            <label>题干信息</label>
+            <textarea name="题干信息" cols="40" rows="6"></textarea>
+        </div>
                 <p>
                     <input type="submit" name="提交" value="提 交"></p>
             </form>
-    </h1>
-</head>
+
+</body>
+</html>
+
