@@ -1,26 +1,25 @@
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport"
-          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
-    <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <!-- 链接bootstrap的css文件-->
-    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css')}}">
-    <title>用户管理系统</title>
-    <!-- 设置透明度 -->
-    <style>
-        .clear{background-color: rgba(255, 255, 255, 0.95);}
-        .listClear{background-color: rgba(255, 255, 255, 0.2);}
-        .navClear{opacity: 0.7}
-    </style>
-    <h1>  学生错题录入
-        <p>错题题干：<br> </p>
-            <form method="post">
-                <div class="form-group">
-        <label>题干信息</label>
-                    <textarea name="题干信息" cols="40" rows="6"></textarea>
-                </div>
-                <p>
-                    <input type="submit" name="提交" value="提 交"></p>
-            </form>
-    </h1>
-</head>
+	{% extends "admin/layout.html" %}
+
+{% block content %}
+<form method="post">
+    {% for msg in get_flashed_messages(category_filter=['ok']) %}
+    <p style="color: red">{{ msg }}</p>
+    {% endfor %}
+    <div class="form-group">
+        <label>题干部分：</label>
+        {{ form.ques_info }}
+            <p style="color: red">{{ v }}</p>
+    </div>
+    {{ form.submit }}
+    {{ form.csrf_token }}
+</form>
+
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $("#f1").addClass("active");
+    });
+</script>
+{% endblock %}
