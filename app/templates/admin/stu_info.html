@@ -85,19 +85,19 @@ Time: 2020/01/29
                 	<legend>个人基础信息</legend>
                         <div>
                             <div class="div1">
-                                <label for="stu_name">姓名:</label>
-                                <input type="text" name="stu_name" id="stu_name" maxlength="20"/>
+                                <label>姓名:</label>
+                                {{ form.stu_name }}
                                 <br><br>
-                                <label for="stu_school">学校:</label>
-                                <input type="text" name="stu_school" id="stu_school" maxlength="50"/>
+                                <label>学校:</label>
+                                {{ form.stu_school}}
                             </div>
                             <div class="div1">
-                                <label for="creat_class">年级:</label>
-                                <input type="number" name="creat_class" id="creat_class" οninput="if(value>12)value=12; if(value<=0)value=1"/>
+                                <label>年级:</label>
+                                {{ form.creat_class }}
                             </div>
                         </div>
                         <div class="div2">
-                            <input type="submit" name="basic_submit" id="basic_submit" value="保存">
+                            {{ form.submit }}
                         </div>
                 </fieldset>
                 <br>
@@ -105,28 +105,22 @@ Time: 2020/01/29
                 	<legend>成绩信息</legend>
                 		<div>
                         	<div class="div1">
-                                <label for="score_offline">考试成绩:</label>
-                                <input type="number" name="score_offline" id="score_offline" οninput="if(value>150)value=150; if(value<0)value=0"/>
+                                <label>考试成绩:</label>
+                                {{ form.score_offline }}
                             <br><br>
-                            	<label for="stu_name">考试类型:</label>
-                                <select name="score_exsort" id="score_exsort">
-                                	<option value="月考">月考</option>
-                                    <option value="期中考试">期中考试</option>
-                                    <option value="期末考试">期末考试</option>
-                                    <option value="联考">联考</option>
-                                    <option value="单元考试" selected="selected">单元考试</option>
-                                </select>
+                            	<label>考试类型:</label>
+                                {{ form.score_exsort }}
                             </div>
                             <div class="div1">
-                            	<label for="score_exclass">考试所属年级:</label>
-                            	<input type="number" name="score_exclass" id="score_exclass" οninput="if(value>12)value=12; if(value<=0)value=1"/>
+                            	<label>考试所属年级:</label>
+                            	{{ form.score_exclass }}
                                 <br><br>
-                                <label for="exam_info">单元考试名称:</label>
-                                <input type="text" name="exam_info" id="exam_info" maxlength="30"/>
+                                <label>单元考试名称:</label>
+                                {{ form.exam_info }}
                             </div>
                         </div>
                         <div class="div2">
-                    	<input type="submit" name="score_submit" id="score_submit" value="保存">
+                    	{{ form.submit }}
                     	</div>
                 </fieldset>
             </form>

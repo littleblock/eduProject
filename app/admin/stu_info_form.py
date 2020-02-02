@@ -5,7 +5,7 @@
 
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField
-from wtforms.validators import DataRequired, ValidationError, EqualTo
+from wtforms.validators import DataRequired, ValidationError, EqualTo, Length, NumberRange
 from app.models import info_table, score_table
 from flask_sqlalchemy import SQLAlchemy
 
@@ -16,57 +16,57 @@ from flask_sqlalchemy import SQLAlchemy
 3. 登录按钮
 '''
 
-class login_form(FlaskForm):
-    account = StringField(
-        # 标签
-        label = "账号",
-        # 验证规则列表
-        validators = [
-            DataRequired("请输入账号哦！")
-        ],
-        description = "账号",
-        # 自定义html属性,且附加选项,会自动在前端判别
-        render_kw = {
-            "class": "form-control textClear",
-            "placeholder": "请输入账号哦!",
-            # 表示输入框不能为空，并有提示信息
-            "required": 'required'
-        }
-    )
-    pwd = PasswordField(
-        # 标签
-        label = "密码",
-        # 验证器
-        validators = [
-            DataRequired("请输入密码哦！")
-        ],
-        description = "密码",
-        render_kw = {
-            "class": "form-control textClear",
-            "placeholder": "请输入密码哦!",
-            # 表示输入框不能为空
-            "required": 'required'
-        }
-    )
-    submit = SubmitField(
-        label= "登录",
-        render_kw = {
-            "class": "btn btn-primary"
-        }
-    )
-
-    # 自定义字段验证规则：validate_字段名
-    def validate_name(self, field):
-        name = field.data
-        user1 = info_table.query.filter_by(stu_name = name).count()
-        if user1 <= 0:
-            raise ValidationError("姓名不存在！")
-        else:
-            user2 = info_table.query.filter_by(stu_name = name).first()
-            pwd = self.pwd.data
-            if not user2.check_pwd(pwd):
-                raise ValidationError("密码不正确")
-
+# class login_form(FlaskForm):
+#     account = StringField(
+#         # 标签
+#         label = "账号",
+#         # 验证规则列表
+#         validators = [
+#             DataRequired("请输入账号哦！")
+#         ],
+#         description = "账号",
+#         # 自定义html属性,且附加选项,会自动在前端判别
+#         render_kw = {
+#             "class": "form-control textClear",
+#             "placeholder": "请输入账号哦!",
+#             # 表示输入框不能为空，并有提示信息
+#             "required": 'required'
+#         }
+#     )
+#     pwd = PasswordField(
+#         # 标签
+#         label = "密码",
+#         # 验证器
+#         validators = [
+#             DataRequired("请输入密码哦！")
+#         ],
+#         description = "密码",
+#         render_kw = {
+#             "class": "form-control textClear",
+#             "placeholder": "请输入密码哦!",
+#             # 表示输入框不能为空
+#             "required": 'required'
+#         }
+#     )
+#     submit = SubmitField(
+#         label= "登录",
+#         render_kw = {
+#             "class": "btn btn-primary"
+#         }
+#     )
+#
+#     # 自定义字段验证规则：validate_字段名
+#     def validate_name(self, field):
+#         name = field.data
+#         user1 = info_table.query.filter_by(stu_name = name).count()
+#         if user1 <= 0:
+#             raise ValidationError("姓名不存在！")
+#         else:
+#             user2 = info_table.query.filter_by(stu_name = name).first()
+#             pwd = self.pwd.data
+#             if not user2.check_pwd(pwd):
+#                 raise ValidationError("密码不正确")
+#
 
 '''
 信息录入表单
@@ -81,11 +81,13 @@ class stu_info_add(FlaskForm):
         label = 'stu_name',
         # 验证器
         validators = [
-            DataRequired("姓名不能为空哦！")
+            DataRequired("姓名不能为空哦！"),
+            Length(1, 20, message = "必须是1-20个字哦！")
         ],
         description = "姓名",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            "id": "stu_name",
             "placeholder": "请输入账号哦!"
         }
     )
@@ -94,11 +96,13 @@ class stu_info_add(FlaskForm):
         label = 'stu_school',
         # 验证器
         validators = [
-            DataRequired("学校不能为空哦！")
+            DataRequired("学校不能为空哦！"),
+            Length(1, 50, message= "必须是1-50个字哦！")
         ],
         description = "学校",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            'id': "stu_school",
             "placeholder": "请输入学校哦!"
         }
     )
@@ -107,11 +111,13 @@ class stu_info_add(FlaskForm):
         label = 'creat_class',
         # 验证器
         validators = [
-            DataRequired("年级不能为空哦！")
+            DataRequired("年级不能为空哦！"),
+            NumberRange(1, 12, message="必须是1-12年级哦！")
         ],
         description = "年级",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            'id': "creat_class",
             "placeholder": "请输入年级哦!"
         }
     )
@@ -120,25 +126,14 @@ class stu_info_add(FlaskForm):
         label = 'score_offline',
         # 验证器
         validators = [
-            DataRequired("成绩不能为空哦！")
+            DataRequired("成绩不能为空哦！"),
+            NumberRange(0, 150, message="必须是0-150分哦！")
         ],
         description = "成绩",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            "id": "score_offline",
             "placeholder": "请输入成绩哦!"
-        }
-    )
-    score_exclass = IntegerField(
-        # 标签
-        label ='score_exclass',
-        # 验证器
-        validators = [
-            DataRequired("本次考试所属年级不能为空哦！")
-        ],
-        description = "考试所属年级",
-        render_kw = {
-            "class": "form-control textClear",
-            "placeholder": "请输入考试所属年级哦!"
         }
     )
     # 考试类型下拉框
@@ -151,7 +146,8 @@ class stu_info_add(FlaskForm):
         ],
         description = "考试类型",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            "id": "score_exsort",
             "placeholder": "请输入考试类型哦!"
         },
         choices = [
@@ -164,16 +160,32 @@ class stu_info_add(FlaskForm):
         default = 5,
         coerce = int
     )
+    score_exclass = IntegerField(
+        # 标签
+        label='score_exclass',
+        # 验证器
+        validators=[
+            DataRequired("本次考试所属年级不能为空哦！"),
+            NumberRange(0, 12, message="必须是0-150分哦！")
+        ],
+        description="考试所属年级",
+        render_kw={
+            "class": "form-control",
+            "placeholder": "请输入考试所属年级哦!"
+        }
+    )
     exam_info = StringField(
         # 标签
         label = 'exam_info',
         # 验证器
         validators = [
-            DataRequired("单元名称不能为空哦！")
+            DataRequired("单元名称不能为空哦！"),
+            Length(0, 30, message="单元名称长度应为0-30个字哦！")
         ],
         description = "单元名称",
         render_kw = {
-            "class": "form-control textClear",
+            "class": "form-control",
+            "id": "exam_info",
             "placeholder": "请输入单元名称哦!"
         }
     )
@@ -181,6 +193,15 @@ class stu_info_add(FlaskForm):
         # 标签
         label = '保存',
         render_kw = {
-            "class": "btn btn-primary"
+            "class": "btn btn-primary",
+            "id": "submit"
         }
     )
+
+
+# '''
+# 信息修改表单
+# 1.
+# 2.
+# '''
+# def stu_info_edit(FlaskForm):
