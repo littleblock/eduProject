@@ -19,7 +19,6 @@ app.debug = True
 # qixuanye的本地数据库
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 # whc的本地数据库
-
 # yj的本地数据库
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
@@ -84,7 +83,7 @@ class ques_review(db.Model):
         return "<ques_review %r>" % self.name
 
 
-
+'''
 # 学生基础信息表模型
 class info_table(db.Model):
     # 定义表名
@@ -119,11 +118,7 @@ class score_table(db.Model):
     # 定义表名
     __tablename__ = 'stu_socre_info'
     # 主键
-# <<<<<<< HEAD
-    score_id = db.Column(db.BigInteger, primary_key = True, unique = True, autoincrement=True)
-# =======
     id = db.Column(db.BigInteger, primary_key=True, unique=True, autoincrement=True)
-# >>>>>>> origin/master
     # 学生编号，与上表的id对应，作为上表外键
     stu_id = db.Column(db.Integer, db.ForeignKey('stu_basic_info.id'), nullable=False)
     # 学生录入的考试成绩
@@ -147,7 +142,7 @@ class score_table(db.Model):
 
     def __repr__(self):
         return "<score_table %r>" % self.name
-
+'''
 
 
 # 学科表
