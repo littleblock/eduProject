@@ -1,0 +1,46 @@
+<!--
+Author: qixuanye
+Time: 2020/01/31
+-->
+
+{% extends "admin/layout.html" %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>学科id</th>
+            <th>学科名</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+        </tr>
+    </thead>
+    {% for v in range(1,10) %}
+        <tr>
+            <td>10001</td>
+            <td>数学</td>
+            <td>qixuanye</td>
+            <td>2020-01-31</td>
+        </tr>
+    {% endfor %}
+</table>
+{% endblock %}
+
+
+{% block js %}
+<!-- 列表栏点击效果显示 -->
+<script>
+    $(document).ready(function () {
+        $("#a2").addClass("active");
+    });
+</script>
+{% endblock %}
