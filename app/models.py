@@ -21,17 +21,16 @@ app.debug = True
 # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 
 # whc的本地数据库
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:WANGwang@127.0.0.1:3306/edu"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 '''
-
 # 错题表模型
-class ques_table(db.Model):
+class wrong_ques_table(db.Model):
     # 定义表名
-    __tablename__ = 'ques_table'
+    __tablename__ = 'wrong_ques_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True)
     # 学生编号
@@ -53,20 +52,20 @@ class ques_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 做题记录表外键连接
-    ques_reviews = db.relationship('ques_review', backref='ques_table')
+    ques_reviews = db.relationship('wrong_ques_review', backref='wrong_ques_table')
 
     def __repr__(self):
         return "<ques_table %r>" % self.name
 
 
 # 做题记录模型
-class ques_review(db.Model):
+class wrong_ques_review(db.Model):
     # 定义表名
-    __tablename__ = 'ques_review'
+    __tablename__ = 'wrong_ques_review'
     # 主键
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.BigInteger, db.ForeignKey("wrong_ques_table.id"), primary_key=True)
     # 问题编号
-    ques_id = db.Column(db.BigInteger, db.ForeignKey("ques_table.id"), nullable = False)
+    ques_id = db.Column(db.BigInteger, nullable = False)
     # 是否做对 1为做对 0为做错
     whether_right = db.Column(db.String(1))
     # 做题时间
@@ -505,6 +504,7 @@ class question_knowledge_relation(db.Model):
 '''
 if __name__ == "__main__":
 
-    # db.drop_all()
-    db.create_all()
+    db.drop_all()
+    #db.create_all()
 '''
+
