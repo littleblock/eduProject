@@ -1,6 +1,6 @@
 <!--
 Author: qixuanye
-Time: 2020/01/31
+Time: 2020/02/02
 -->
 
 {% extends "admin/layout.html" %}
@@ -19,22 +19,20 @@ Time: 2020/01/31
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>学科中文名</th>
-            <th>学科英文名</th>
+            <th>学段名</th>
             <th>创建人</th>
             <th>创建时间</th>
         </tr>
     </thead>
     {% for v in page_data.items %}
         <tr>
-            <td>{{ v.subject_name }}</td>
-            <td>{{ v.subject_english_name }}</td>
+            <td>{{ v.period_name }}</td>
             <td>{{ v.creator }}</td>
             <td>{{ v.create_time }}</td>
         </tr>
     {% endfor %}
 </table>
-{{ pg.page(page_data, 'admin.subject_list') }}
+{{ pg.page(page_data, 'admin.period_list') }}
 {% endblock %}
 
 
@@ -42,7 +40,7 @@ Time: 2020/01/31
 <!-- 列表栏点击效果显示 -->
 <script>
     $(document).ready(function () {
-        $("#a2").addClass("active");
+        $("#b2").addClass("active");
     });
 </script>
 {% endblock %}

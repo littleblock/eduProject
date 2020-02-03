@@ -26,37 +26,3 @@ class stu_ques_add_form(FlaskForm):
     )
 
 
-'''
-学科信息录入
-1. 学科名（中文)
-2. 学科名（英文）
-'''
-class subject_form(FlaskForm):
-    chinese_name = StringField(
-        label = "学科中文名",
-        validators = [
-            DataRequired("不能为空！")
-        ],
-        description = "学科中文名",
-        render_kw = {
-            "class": "form-control",
-            "placeholder": "请输入学科中文名"
-        }
-    )
-    english_name = StringField(
-        label="学科英文名",
-        validators=[
-            DataRequired("不能为空！")
-        ],
-        description="学科英文名",
-        render_kw={
-            "class": "form-control",
-            "placeholder": "请输入学科英文名"
-        }
-    )
-    submit = SubmitField(
-        "提交",
-        render_kw = {
-            "class": "btn btn-primary"
-        }
-    )
