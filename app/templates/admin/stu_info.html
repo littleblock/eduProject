@@ -85,19 +85,19 @@ Time: 2020/01/29
                 	<legend>个人基础信息</legend>
                         <div>
                             <div class="div1">
-                                <label>姓名:</label>
+                                <label id="stu_name">姓名:</label>
                                 {{ form.stu_name }}
                                 <br><br>
-                                <label>学校:</label>
+                                <label id="stu_school">学校:</label>
                                 {{ form.stu_school}}
                             </div>
                             <div class="div1">
-                                <label>年级:</label>
+                                <label id="creat_class">年级:</label>
                                 {{ form.creat_class }}
                             </div>
                         </div>
-                        <div class="div2">
-                            {{ form.submit }}
+                        <div class="div2" id="basic_submit">
+                            {{ form.basic_submit }}
                         </div>
                 </fieldset>
                 <br>
@@ -105,22 +105,22 @@ Time: 2020/01/29
                 	<legend>成绩信息</legend>
                 		<div>
                         	<div class="div1">
-                                <label>考试成绩:</label>
+                                <label id="score_offline">考试成绩:</label>
                                 {{ form.score_offline }}
                             <br><br>
-                            	<label>考试类型:</label>
+                            	<label id="score_exsort">考试类型:</label>
                                 {{ form.score_exsort }}
                             </div>
                             <div class="div1">
-                            	<label>考试所属年级:</label>
+                            	<label id="score_exclass">考试所属年级:</label>
                             	{{ form.score_exclass }}
                                 <br><br>
-                                <label>单元考试名称:</label>
+                                <label id="exam_info">单元考试名称:</label>
                                 {{ form.exam_info }}
                             </div>
                         </div>
-                        <div class="div2">
-                    	{{ form.submit }}
+                        <div class="div2" id="score_submit">
+                    	{{ form.score_submit }}
                     	</div>
                 </fieldset>
             </form>

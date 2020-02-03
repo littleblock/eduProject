@@ -189,12 +189,20 @@ class stu_info_add(FlaskForm):
             "placeholder": "请输入单元名称哦!"
         }
     )
-    submit = SubmitField(
+    basic_submit = SubmitField(
         # 标签
-        label = '保存',
+        label = '保存个人信息',
         render_kw = {
             "class": "btn btn-primary",
-            "id": "submit"
+            "id": "basic_submit"
+        }
+    )
+    score_submit = SubmitField(
+        # 标签
+        label='保存成绩信息',
+        render_kw={
+            "class": "btn btn-primary",
+            "id": "score_submit"
         }
     )
 

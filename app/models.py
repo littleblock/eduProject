@@ -83,7 +83,7 @@ class ques_review(db.Model):
         return "<ques_review %r>" % self.name
 
 
-'''
+
 # 学生基础信息表模型
 class info_table(db.Model):
     # 定义表名
@@ -142,7 +142,7 @@ class score_table(db.Model):
 
     def __repr__(self):
         return "<score_table %r>" % self.name
-'''
+
 
 
 # 学科表
