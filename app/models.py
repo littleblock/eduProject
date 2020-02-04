@@ -9,6 +9,7 @@ from datetime import datetime
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
 # 生成数据表后，记得再重新注释上
 
+'''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,16 +19,16 @@ app.debug = True
 # 数据库配置
 # qixuanye的本地数据库
 # app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+
 # whc的本地数据库
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
-app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
-"""
-
+'''
 # 错题表模型
-class ques_table(db.Model):
+class wrong_ques_table(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_table'
     # 主键
@@ -50,23 +51,25 @@ class ques_table(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 做题记录表外键连接
+    ques_reviews = db.relationship('wrong_ques_review', backref='wrong_ques_table')
 
     def __repr__(self):
         return "<ques_table %r>" % self.name
 
 
 # 做题记录模型
-class ques_review(db.Model):
+class wrong_ques_review(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_review'
     # 主键
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.BigInteger, db.ForeignKey("wrong_ques_table.id"), primary_key=True)
     # 问题编号
-    ques_id = db.Column(db.Integer, unique=True)
+    ques_id = db.Column(db.BigInteger, nullable = False)
     # 是否做对 1为做对 0为做错
     whether_right = db.Column(db.String(1))
     # 做题时间
-    do_time = db.Column(db.DateTime, unique=True)
+    do_time = db.Column(db.DateTime, nullable = False)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -77,14 +80,13 @@ class ques_review(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
-    # 做题记录表外键连接
-    relations = db.relationship('ques_table', backref='ques_review')
+
 
     def __repr__(self):
         return "<ques_review %r>" % self.name
 
 
-
+'''
 # 学生基础信息表模型
 class info_table(db.Model):
     # 定义表名
@@ -143,7 +145,7 @@ class score_table(db.Model):
 
     def __repr__(self):
         return "<score_table %r>" % self.name
-
+'''
 
 
 # 学科表
@@ -169,7 +171,7 @@ class subject(db.Model):
     # 知识点表外键连接
     knowledge_basics = db.relationship('knowledge_basic', backref='subject')
     # 知识点等级表外键连接
-    knowledge_levels = db.relationship('knowledge_basic', backref='subject')
+    knowledge_levels = db.relationship('knowledge_level', backref='subject')
     # 章节表外键连接
     chapters = db.relationship('chapter', backref='subject')
     # 试题表外键连接
@@ -501,6 +503,8 @@ class question_knowledge_relation(db.Model):
 
 '''
 if __name__ == "__main__":
-    # db.drop_all()
-    db.create_all()
+
+    db.drop_all()
+    #db.create_all()
 '''
+
