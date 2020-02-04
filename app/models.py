@@ -8,7 +8,7 @@ from datetime import datetime
 
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
 # 生成数据表后，记得再重新注释上
-"""
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -17,9 +17,10 @@ app = Flask(__name__)
 app.debug = True
 # 数据库配置
 # qixuanye的本地数据库
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 # whc的本地数据库
 # yj的本地数据库
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
