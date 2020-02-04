@@ -1,0 +1,137 @@
+<!--
+Author: Yujian
+Time: 2020/01/29
+-->
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <!-- 链接bootstrap的css文件-->
+<!--    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css')}}">-->
+    <title>蜻蜓教育💯 学生个人信息</title>
+    <style type="text/css">
+		div, ul, li, input, p, h1, h2, h3, h4, h5, h6{
+            margin: 0;
+            padding: 0;
+            font:16px simsun;
+            color:#000;
+        }
+        header{
+			background:#3C9;
+			text-align:center;
+			font-size:50px
+		}
+		nav{
+			width: 970px auto;
+            height: 25px;
+            margin: 10px auto;
+			padding: 2px;
+            border-bottom: 2px solid #3C9;
+			margin:auto
+		}
+		article{
+			text-align:center;
+			font:24px solid bold
+		}
+		footer{
+			border-top:2px solid #E3F2FD;
+			text-align:center;
+		}
+		fieldset{
+			background:#E3F2FD;
+			border-style:solid;
+			border-hight:900px;
+			border-width:medium;
+			border-color:#3C9;
+			margin:auto
+		}
+		.div1{
+			width:50%;
+			height:auto;
+			float:left;
+			padding
+		}
+		.div2{
+			width:100%;
+			text-align:center;
+			float:left
+		}
+    </style>
+<!--    {% block css %}{% endblock %}-->
+</head>
+    <body>
+        <header>
+        蜻蜓教育
+        </header>
+
+        <nav>
+        	<div>
+            	<a href="stu_ques_add.html">
+            	添加错题
+            	</a>
+            </div>
+        </nav>
+
+        <main>
+            <article>
+            个人信息
+            </article>
+
+            <form name="stu_info_form" method="post" action="../../admin/stu_info_form.py">
+            	<fieldset>
+                	<legend>个人基础信息</legend>
+                        <div>
+                            <div class="div1">
+                                <label id="stu_name">姓名:</label>
+                                {{ form.stu_name }}
+                                <br><br>
+                                <label id="stu_school">学校:</label>
+                                {{ form.stu_school}}
+                            </div>
+                            <div class="div1">
+                                <label id="creat_class">年级:</label>
+                                {{ form.creat_class }}
+                            </div>
+                        </div>
+                        <div class="div2" id="basic_submit">
+                            {{ form.basic_submit }}
+                        </div>
+                </fieldset>
+                <br>
+                <fieldset>
+                	<legend>成绩信息</legend>
+                		<div>
+                        	<div class="div1">
+                                <label id="score_offline">考试成绩:</label>
+                                {{ form.score_offline }}
+                            <br><br>
+                            	<label id="score_exsort">考试类型:</label>
+                                {{ form.score_exsort }}
+                            </div>
+                            <div class="div1">
+                            	<label id="score_exclass">考试所属年级:</label>
+                            	{{ form.score_exclass }}
+                                <br><br>
+                                <label id="exam_info">单元考试名称:</label>
+                                {{ form.exam_info }}
+                            </div>
+                        </div>
+                        <div class="div2" id="score_submit">
+                    	{{ form.score_submit }}
+                    	</div>
+                </fieldset>
+            </form>
+
+        </main>
+        <br>
+
+        <footer>
+        	<span>Copyright @2019-2020 蜻蜓在线教育</span>
+        </footer>
+
+    </body>
+</html>
+

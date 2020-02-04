@@ -23,6 +23,7 @@ app.debug = True
 # whc的本地数据库
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
@@ -31,12 +32,12 @@ db = SQLAlchemy(app)
 class wrong_ques_table(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_table'
-    # 问题编号
-    ques_id = db.Column(db.Integer, primary_key=True)
-    # 编号
-    id = db.Column(db.BigInteger, unique=True)
+    # 主键
+    id = db.Column(db.BigInteger, primary_key=True)
     # 学生编号
     student_id = db.Column(db.Integer, unique=True)
+    # 问题编号
+    ques_id = db.Column(db.Integer, unique=True)
     # 题干信息
     ques_info = db.Column(db.String(100), nullable=False)
     # 问题答案
@@ -63,9 +64,9 @@ class wrong_ques_review(db.Model):
     # 定义表名
     __tablename__ = 'wrong_ques_review'
     # 主键
-    id = db.Column(db.BigInteger, primary_key=True)
+    id = db.Column(db.BigInteger, db.ForeignKey("wrong_ques_table.id"), primary_key=True)
     # 问题编号
-    ques_id = db.Column(db.Integer, db.ForeignKey("wrong_ques_table.ques_id"),nullable=False)
+    ques_id = db.Column(db.BigInteger, nullable = False)
     # 是否做对 1为做对 0为做错
     whether_right = db.Column(db.String(1))
     # 做题时间
@@ -86,7 +87,7 @@ class wrong_ques_review(db.Model):
         return "<ques_review %r>" % self.name
 
 
-'''
+
 # 学生基础信息表模型
 class info_table(db.Model):
     # 定义表名
@@ -145,7 +146,7 @@ class score_table(db.Model):
 
     def __repr__(self):
         return "<score_table %r>" % self.name
-'''
+
 
 
 # 学科表
@@ -504,7 +505,7 @@ class question_knowledge_relation(db.Model):
 '''
 if __name__ == "__main__":
 
-    #db.drop_all()
-    db.create_all()
+    db.drop_all()
+    #db.create_all()
 '''
 
