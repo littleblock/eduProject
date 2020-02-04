@@ -21,23 +21,12 @@ def ques_input():
         # 判断该错题是否在在错题表中
         if (ques_table_exit(1001)):
             # 错题存在 插入记录
-            review_in(1001, "1")
+            create_ques_review(1001,1);
         else:
             # 错题不存在 创建错题及其记录
             create_ques_table(123, 1001, data["ques_info"], "答案", "whc")
             create_ques_review(1001, "1")
-    return render_template("/admin/stu_ques_add.html", form = form)
-
-
-# 向已有的错题记录中插入记录
-def review_in(question_id, right):
-    reviews = wrong_ques_review.query.filter_by(ques_id=question_id).count()
-    review = wrong_ques_review.query.filter_by(ques_id=question_id).first()
-    if reviews <= 0:
-        create_ques_review(question_id, right)
-    else:
-        review.whether_right += "," + right
-        review.do_time += "," + datetime.now()
+    return render_template("/admin/stu_ques_add.html", form=form)
 
 
 # 创建错题
