@@ -1,0 +1,39 @@
+<!--
+Author: qixuanye
+Time: 2020/02/03
+一级知识点录入界面
+-->
+
+{% extends "admin/layout.html"%}
+
+{% block content %}
+
+<form method="post">
+    <div class="form-group">
+        <label>学段类别</label>
+        {{ form.period_name }}
+        {% for v in form.period_name.errors %}
+        <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>一级知识点名</label>
+        {{ form.knowledge_level1_name }}
+        {% for v in form.knowledge_level1_name.errors %}
+        <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    {{ form.submit }}
+    {{ form.csrf_token }}
+</form>
+{% endblock %}
+
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $("#c1").addClass("active");
+    });
+
+</script>
+{% endblock %}
