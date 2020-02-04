@@ -6,7 +6,7 @@
 from flask_wtf import FlaskForm
 from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField
 from wtforms.validators import DataRequired, ValidationError, EqualTo, Length, NumberRange
-from app.models import info_table, score_table
+from app.models import stu_info_table, stu_score_table
 from flask_sqlalchemy import SQLAlchemy
 
 '''
@@ -58,11 +58,11 @@ from flask_sqlalchemy import SQLAlchemy
 #     # 自定义字段验证规则：validate_字段名
 #     def validate_name(self, field):
 #         name = field.data
-#         user1 = info_table.query.filter_by(stu_name = name).count()
+#         user1 = stu_info_table.query.filter_by(stu_name = name).count()
 #         if user1 <= 0:
 #             raise ValidationError("姓名不存在！")
 #         else:
-#             user2 = info_table.query.filter_by(stu_name = name).first()
+#             user2 = stu_info_table.query.filter_by(stu_name = name).first()
 #             pwd = self.pwd.data
 #             if not user2.check_pwd(pwd):
 #                 raise ValidationError("密码不正确")
@@ -189,6 +189,7 @@ class stu_info_add(FlaskForm):
             "placeholder": "请输入单元名称哦!"
         }
     )
+    '''
     basic_submit = SubmitField(
         # 标签
         label = '保存个人信息',
@@ -197,12 +198,13 @@ class stu_info_add(FlaskForm):
             "id": "basic_submit"
         }
     )
+    '''
     score_submit = SubmitField(
         # 标签
         label='保存成绩信息',
         render_kw={
-            "class": "btn btn-primary",
-            "id": "score_submit"
+            "class": "btn btn-primary div2",
+            # "id": "score_submit"
         }
     )
 

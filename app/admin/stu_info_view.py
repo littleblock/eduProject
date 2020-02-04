@@ -7,7 +7,7 @@ from functools import wraps
 from app import db
 from app.admin.stu_info_form import stu_info_add
 from app.admin import admin
-from app.models import info_table, score_table
+from app.models import stu_info_table, stu_score_table
 from datetime import datetime
 from flask import render_template, session, url_for, request, flash
 
@@ -72,8 +72,8 @@ def info_add():
         score_exclass = request.form.get("score_exclass")
         score_exsort = request.form.get("score_exsort")
         exam_info = request.form.get("exam_info")
-        # 保存info_table数据
-        stu_info_list = info_table(
+        # 保存stu_info_table数据
+        stu_info_list = stu_info_table(
             stu_name = stu_name,
             stu_school = stu_school,
             creat_class = creat_class,
@@ -84,8 +84,8 @@ def info_add():
             last_modify_time = datetime.now(),
             is_del = 0
         )
-        # 保存score_table数据
-        score_info_list = score_table(
+        # 保存stu_score_table数据
+        score_info_list = stu_score_table(
             score_offline = score_offline,
             score_exclass = score_exclass,
             score_exsort =score_exsort,
@@ -99,7 +99,8 @@ def info_add():
         db.session.add(stu_info_list,score_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-    return render_template("/admin/stu_info.html", title = "学生信息", form = stu_form)
+        redirect(url_for('admin.info_add'))
+    return render_template("/admin/stu_info.html", title = "蜻蜓教育💯学生个人信息", form = stu_form)
 
 
 # # 编辑信息

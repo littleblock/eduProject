@@ -11,7 +11,7 @@ Time: 2020/01/29
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
     <!-- 链接bootstrap的css文件-->
 <!--    <link rel="stylesheet" type="text/css" href="{{ url_for('static', filename = 'css/bootstrap.min.css')}}">-->
-    <title>蜻蜓教育💯 学生个人信息</title>
+    <title>{{ title }}</title>
     <style type="text/css">
 		div, ul, li, input, p, h1, h2, h3, h4, h5, h6{
             margin: 0;
@@ -80,7 +80,7 @@ Time: 2020/01/29
             个人信息
             </article>
 
-            <form name="stu_info_form" method="post" action="../../admin/stu_info_form.py">
+            <form method="post">
             	<fieldset>
                 	<legend>个人基础信息</legend>
                         <div>
@@ -96,9 +96,7 @@ Time: 2020/01/29
                                 {{ form.creat_class }}
                             </div>
                         </div>
-                        <div class="div2" id="basic_submit">
-                            {{ form.basic_submit }}
-                        </div>
+
                 </fieldset>
                 <br>
                 <fieldset>
@@ -111,18 +109,17 @@ Time: 2020/01/29
                             	<label id="score_exsort">考试类型:</label>
                                 {{ form.score_exsort }}
                             </div>
-                            <div class="div1">
-                            	<label id="score_exclass">考试所属年级:</label>
-                            	{{ form.score_exclass }}
-                                <br><br>
-                                <label id="exam_info">单元考试名称:</label>
-                                {{ form.exam_info }}
-                            </div>
+                            <label id="score_exclass">考试所属年级:</label>
+                            {{ form.score_exclass }}
+                            <br><br>
+                            <label id="exam_info">单元考试名称:</label>
+                            {{ form.exam_info }}
+                            {{ form.score_submit }}
+                            {{ form.csrf_token }}
                         </div>
-                        <div class="div2" id="score_submit">
-                    	{{ form.score_submit }}
-                    	</div>
                 </fieldset>
+
+
             </form>
 
         </main>
