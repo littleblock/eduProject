@@ -24,19 +24,8 @@ Time: 2020/01/31
 
 <div class="container" style="margin-top: 40px">
     <div class="row">
-        <!-- 列表栏-->
-        <div class="col-md-2">
-            <div class="list-group">
-                <a id="a1" href="/admin/subject/add" class="list-group-item list-group-item-action">添加学科</a>
-                <a id="a2" href="/admin/subject/list/1"
-                   class="list-group-item list-group-item-action">学科列表</a>
-                <a id="b1" href="/admin/period/add"
-                   class="list-group-item list-group-item-action">添加学段</a>
-                <a id="b2" href="/admin/period/list/1" class="list-group-item list-group-item-action">学段列表</a>
-                <a id="c1" href="/admin/knowledge/add" class="list-group-item list-group-item-action">添加知识点</a>
-                <a id="c2" href="/admin/knowledge/list/1" class="list-group-item list-group-item-action">知识点列表</a>
-            </div>
-        </div>
+        <!-- 列表菜单栏-->
+        {% include "admin/menus.html" %}
         <!-- 内容栏-->
         <div class="col-md-10">
             <div class="card">
