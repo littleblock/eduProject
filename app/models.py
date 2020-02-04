@@ -23,6 +23,7 @@ app.debug = True
 # whc的本地数据库
 app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
+app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
