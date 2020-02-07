@@ -1,0 +1,17 @@
+{% extends "layout.html" %}
+{% import "bootstrap/wtf.html" as wtf %}
+ 
+{% block title %}SYSUfm - 更换头像{% endblock %}
+ 
+{% block page_content %}
+<div class="page-header">
+  <h1>更换你的头像</h1>
+</div>
+<div class="col-md-4">
+  <form action="" method=post enctype=multipart/form-data>
+    <input type=file name=file><br/>
+    <input type=submit value=Upload>
+  </form>
+</div>
+ 
+{% endblock %}

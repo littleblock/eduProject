@@ -1,0 +1,70 @@
+{% extends "admin/layout.html" %}
+
+{% block content %}
+<form method="post">
+    {% for msg in get_flashed_messages(category_filter=['ok']) %}
+    <p style="color: red">{{ msg }}</p>
+    {% endfor %}
+    <img src="{{ url_for('static', filename= 'touxiang.jpg') }}" width="100" height="100" >
+    <div class="form-group">
+        <label>更改头像</label>
+        {{ form.photo }}
+    </div>
+    <div class="form-group">
+        <label>姓名</label>
+        {{ form.name }}
+        {% for v in form.name.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>年龄</label>
+        {{ form.age }}
+        {% for v in form.age.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>毕业学校</label>
+        {{ form.school }}
+        {% for v in form.school.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>学习专业</label>
+        {{ form.major }}
+        {% for v in form.major.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>擅长教学的知识模块</label>
+        {{ form.adv_model }}
+        {% for v in form.adv_model.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>擅长教学的学生年纪</label>
+        {{ form.adv_grade }}
+        {% for v in form.adv_grade.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>自我介绍</label>
+        {{ form.introduction }}
+    </div>
+    {{ form.info_submit }}
+    {{ form.csrf_token }}
+</form>
+{% endblock %}
+
+{% block js %}
+<script>
+    $(document).ready(function () {
+        $("#a1").addClass("active");
+    });
+</script>
+{% endblock %}

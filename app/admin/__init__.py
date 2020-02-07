@@ -11,3 +11,4 @@ import app.admin.stu_info_view
 import app.admin.stu_ques_view
 import app.admin.auth
 import app.admin.knowledge_map_view
+import app.admin.teacher_view

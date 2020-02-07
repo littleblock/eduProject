@@ -9,7 +9,7 @@ from datetime import datetime
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
 # 生成数据表后，记得再重新注释上
 
-''''
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -18,16 +18,79 @@ app = Flask(__name__)
 app.debug = True
 # 数据库配置
 # qixuanye的本地数据库
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+#app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 
 # whc的本地数据库
-# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
 # app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
-'''
+
+
+# 教师信息表
+class teacher_info(db.Model):
+    __tablename__ = 'teacher_info'
+    #教师id
+    teacher_id = db.Column(db.Integer, primary_key=True)
+    #姓名
+    name = db.Column(db.String(50), nullable=False)
+    #年龄
+    age = db.Column(db.Integer, nullable=False)
+    #头像照片
+    head_photo = db.Column(db.String(200), nullable=False)
+    #毕业学校
+    school = db.Column(db.String(50), nullable=False)
+    #专业
+    major = db.Column(db.String(50), nullable=False)
+    #擅长模块
+    adv_model = db.Column(db.String(200), nullable=False)
+    #擅长年纪
+    adv_grade = db.Column(db.String(200), nullable=False)
+    #自我介绍
+    introduce = db.Column(db.String(200), nullable=True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 老师评价表外键连接
+    teacher_evalu = db.relationship('teacher_evaluation', backref='teacher_info')
+
+    def __repr__(self):
+        return "<teacher_info %r>" % self.name
+
+
+# 老师评价表
+class teacher_evaluation(db.Model):
+    __tablename__ = 'teacher_evaluation'
+    #id
+    id = db.Column(db.Integer, primary_key=True)
+    #教师id
+    teacher_id = db.Column(db.Integer, db.ForeignKey("teacher_info.teacher_id"), nullable=False)
+    #评价分数
+    score = db.Column(db.Integer, nullable=False)
+    #学生评价
+    evaluation = db.Column(db.String(200), nullable=True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<teacher_evaluation %r>" % self.name
 
 
 # 错题表模型
@@ -506,10 +569,12 @@ class question_knowledge_relation(db.Model):
     def __repr__(self):
         return "<question_knowledge_relation %r>" % self.name
 
-'''
-if __name__ == "__main__":
+
+
+
+#if __name__ == "__main__":
 
     #db.drop_all()
-    db.create_all()
-'''
+    #db.create_all()
+
 
