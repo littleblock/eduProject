@@ -79,7 +79,7 @@ class teacher_info_form(FlaskForm):
             "placeholder": "请输入毕业学校"
         }
     )
-    # 擅长年纪
+    # 擅长年级
     adv_grade = core.SelectMultipleField(
         # 标签
         label='adv_grade',
@@ -87,9 +87,8 @@ class teacher_info_form(FlaskForm):
         validators=[
             DataRequired("至少选择一项")
         ],
-        description="擅长教学的年纪",
+        description="擅长教学的年级",
         render_kw={
-            "class": "form-control",
             "id": "adv_grade",
             "placeholder": "请至少选择一项"
         },
@@ -113,7 +112,7 @@ class teacher_info_form(FlaskForm):
         coerce=int
     )
 
-    # 擅长年纪
+    # 擅长教学模块
     adv_model = core.SelectMultipleField(
         # 标签
         label='adv_model',
@@ -123,7 +122,6 @@ class teacher_info_form(FlaskForm):
         ],
         description="擅长教学的模块",
         render_kw={
-            "class": "form-control",
             "id": "adv_model",
             "placeholder": "请至少选择一项"
         },
