@@ -3,9 +3,9 @@
 # @Time: 2020/2/6 19:00
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField，
 from wtforms import SelectMultipleField, core, widgets
-from wtforms.validators import DataRequired, ValidationError, EqualTo
+from wtforms.validators import DataRequired, ValidationError, EqualTo， NumberRange
 from wtforms.fields import SelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 '''
@@ -126,19 +126,17 @@ class teacher_info_form(FlaskForm):
             "placeholder": "请至少选择一项"
         },
         choices=[
-            (1, '代数运算'),
-            (2, '方程组求解'),
-            (3, '函数'),
-            (4, '平面几何'),
-            (5, '立体几何'),
-            (6, '解析几何'),
-            (7, '向量运算'),
-            (8, '排列组合'),
-            (9, '概率与统计'),
+            (1, '实数与不等式'),
+            (2, '函数'),
+            (3, '简单平面几何'),
+            (4, '圆'),
+            (5, '相似与全等较难问题'),
+            (6, '统计概率'),
+            (7, '全部擅长'),
         ],
         widget=widgets.ListWidget(prefix_label=False),
         option_widget=widgets.CheckboxInput(),
-        default=9,
+        default=7,
         coerce=int
     )
     # 学校
@@ -161,3 +159,47 @@ class teacher_info_form(FlaskForm):
             # "id": "info_submit"
         }
     )
+
+    '''
+    老师评价：
+    评价分数
+    评价语
+    '''
+
+    class teacher_evaluate_form(FlaskForm):
+        # 评价分数
+        score = IntegerField(
+            # 标签
+            label='score',
+            # 验证器
+            validators=[
+                DataRequired("姓名不能为空"),
+                NumberRange(0, 100, "分数在0-100之间"),
+            ],
+            description="评价分数",
+            render_kw={
+                "class": "form-control",
+                'id': "score",
+                "placeholder": "分数在0-100之间"
+            }
+        )
+        # 评语
+        words = TextAreaField(
+            # 标签
+            label='words',
+            description="本次课的评价",
+            render_kw={
+                "class": "form-control",
+                'id': "words",
+                "placeholder": "对老师的评价（选填）"
+            }
+        )
+        # 提交注册信息
+        submit = SubmitField(
+            # 标签
+            label='提交注册信息',
+            render_kw={
+                "class": "btn btn-primary div2",
+                # "id": "submit"
+            }
+        )

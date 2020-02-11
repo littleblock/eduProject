@@ -9,8 +9,7 @@ from . import admin
 from app.models import wrong_ques_table, wrong_ques_review, teacher_info, teacher_evaluation, db
 from datetime import datetime
 from flask import render_template, session, url_for, request, flash, redirect
-from .teacher_info_form import teacher_info_form
-from .teacher_evaluate_form import teacher_evaluate_form
+from .teacher_info_form import teacher_info_form，teacher_evaluate_form
 import base64
 
 
@@ -18,7 +17,7 @@ UPLOAD_FOLDER = r'C:\Users\whc\PycharmProjects\eduProject\app\upload'
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 Basic_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg'
 grade = ["一年级","二年级","三年级","四年级","五年级","六年级","初一","初二","初三","高一","高二","高三"]
-model = ["代数运算","方程组求解","函数","平面几何","立体几何","解析几何","向量运算","排列组合","概率与统计"]
+model = ["实数与不等式","函数","简单平面几何","圆","相似与全等较难问题","统计概率","全部擅长"]
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 def allowed_file(filename):
