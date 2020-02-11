@@ -3,7 +3,7 @@
 # @Time: 2020/1/21 19:53
 
 # 配置好app中的__init.py__ 后，在这里导入db
-#from app import db
+from app import db
 from datetime import datetime
 
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
@@ -576,9 +576,9 @@ class question_knowledge_relation(db.Model):
 
 
 
-if __name__ == "__main__":
+#if __name__ == "__main__":
 
     #db.drop_all()
-    db.create_all()
+    #db.create_all()
 
 
