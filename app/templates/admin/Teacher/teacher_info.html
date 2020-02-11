@@ -18,9 +18,9 @@
         {% endfor %}
     </div>
     <div class="form-group">
-        <label>年龄</label>
-        {{ form.age }}
-        {% for v in form.age.errors %}
+        <label>微信号</label>
+        {{ form.chat }}
+        {% for v in form.name.errors %}
             <p style="color: red">{{ v }}</p>
         {% endfor %}
     </div>
@@ -28,6 +28,13 @@
         <label>毕业学校</label>
         {{ form.school }}
         {% for v in form.school.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>年纪</label>
+        {{ form.grade }}
+        {% for v in form.grade.errors %}
             <p style="color: red">{{ v }}</p>
         {% endfor %}
     </div>
@@ -46,8 +53,15 @@
         {% endfor %}
     </div>
     <div class="form-group">
-        <label>擅长教学的学生年纪</label>
+        <label>擅长教学年纪</label>
         {{ form.adv_grade }}
+        {% for v in form.adv_grade.errors %}
+            <p style="color: red">{{ v }}</p>
+        {% endfor %}
+    </div>
+    <div class="form-group">
+        <label>有无家教经验</label>
+        {{ form.experience }}
         {% for v in form.adv_grade.errors %}
             <p style="color: red">{{ v }}</p>
         {% endfor %}

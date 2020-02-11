@@ -3,7 +3,7 @@
 # @Time: 2020/1/21 19:53
 
 # 配置好app中的__init.py__ 后，在这里导入db
-from app import db
+#from app import db
 from datetime import datetime
 
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
@@ -36,8 +36,8 @@ class teacher_info(db.Model):
     teacher_id = db.Column(db.Integer, primary_key=True)
     #姓名
     name = db.Column(db.String(50), nullable=False)
-    #年龄
-    age = db.Column(db.Integer, nullable=False)
+    #微信号
+    chat = db.Column(db.String(100), nullable=False)
     #头像照片
     head_photo = db.Column(db.String(200), nullable=False)
     #毕业学校
@@ -46,8 +46,12 @@ class teacher_info(db.Model):
     major = db.Column(db.String(50), nullable=False)
     #擅长模块
     adv_model = db.Column(db.String(200), nullable=False)
-    #擅长年纪
+    #擅长教学年纪
     adv_grade = db.Column(db.String(200), nullable=False)
+    #年纪
+    grade = db.Column(db.String(200), nullable=False)
+    #有无家教经验
+    experience = db.Column(db.String(10), nullable=False)
     #自我介绍
     introduce = db.Column(db.String(200), nullable=True)
     # 创建人
@@ -572,9 +576,9 @@ class question_knowledge_relation(db.Model):
 
 
 
-#if __name__ == "__main__":
+if __name__ == "__main__":
 
     #db.drop_all()
-    #db.create_all()
+    db.create_all()
 
 

@@ -3,9 +3,9 @@
 # @Time: 2020/2/6 19:00
 
 from flask_wtf import FlaskForm
-from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField，
+from wtforms import StringField, PasswordField, SubmitField, SelectField, TextAreaField, FileField, IntegerField
 from wtforms import SelectMultipleField, core, widgets
-from wtforms.validators import DataRequired, ValidationError, EqualTo， NumberRange
+from wtforms.validators import DataRequired, ValidationError, EqualTo,NumberRange
 from wtforms.fields import SelectMultipleField
 from wtforms.widgets import ListWidget, CheckboxInput
 '''
@@ -40,19 +40,19 @@ class teacher_info_form(FlaskForm):
         "placeholder": "请输入姓名"
         }
     )
-    # 年龄
-    age = StringField(
+    # 微信号
+    chat = StringField(
         # 标签
-        label='age',
+        label='chat',
         # 验证器
         validators=[
-            DataRequired("年龄不能为空"),
+            DataRequired("微信号不能为空"),
         ],
-        description="年龄",
+        description="微信号",
         render_kw={
             "class": "form-control",
-            'id': "age",
-            "placeholder": "请输入年龄"
+            'id': "chat",
+            "placeholder": "请输入微信号"
         }
     )
     # 专业
@@ -85,7 +85,32 @@ class teacher_info_form(FlaskForm):
             "placeholder": "请输入毕业学校"
         }
     )
-    # 擅长年级
+    # 年级
+    grade = core.SelectField(
+        # 标签
+        label='adv_grade',
+        # 验证器
+        validators=[
+            DataRequired("至少选择一项")
+        ],
+        description="年级",
+        render_kw={
+            "id": "adv_grade",
+            "placeholder": "请至少选择一项"
+        },
+        choices=[
+            (1, '大一'),
+            (2, '大二'),
+            (3, '大三'),
+            (4, '大四'),
+            (5, '研一'),
+            (6, '研二'),
+            (7, '研三'),
+        ],
+        default=7,
+        coerce=int
+    )
+    #擅长教学年纪
     adv_grade = core.SelectMultipleField(
         # 标签
         label='adv_grade',
@@ -93,7 +118,7 @@ class teacher_info_form(FlaskForm):
         validators=[
             DataRequired("至少选择一项")
         ],
-        description="擅长教学的年级",
+        description="年级",
         render_kw={
             "id": "adv_grade",
             "placeholder": "请至少选择一项"
@@ -104,7 +129,7 @@ class teacher_info_form(FlaskForm):
             (3, '三年级'),
             (4, '四年级'),
             (5, '五年级'),
-            (6, '六年级'),
+            (6, '六年纪'),
             (7, '初一'),
             (8, '初二'),
             (9, '初三'),
@@ -117,7 +142,6 @@ class teacher_info_form(FlaskForm):
         default=12,
         coerce=int
     )
-
     # 擅长教学模块
     adv_model = core.SelectMultipleField(
         # 标签
@@ -145,7 +169,28 @@ class teacher_info_form(FlaskForm):
         default=7,
         coerce=int
     )
-    # 学校
+    #有无家教经验
+    experience = SelectField(
+        #标签
+        label='experience',
+        #验证器
+        validators=[
+            DataRequired("至少选择一项")
+        ],
+        description="有无家教经验",
+        render_kw = {
+                     "id": "experience",
+                     "placeholder": "请至少选择一项"
+        },
+        choices=[
+            (1,'有家教经验'),
+            (2,'无家教经验'),
+        ],
+
+        default=1,
+        coerce=int
+    )
+    # 自我介绍
     introduction = TextAreaField(
         # 标签
         label='introduction',
@@ -172,40 +217,40 @@ class teacher_info_form(FlaskForm):
     评价语
     '''
 
-    class teacher_evaluate_form(FlaskForm):
-        # 评价分数
-        score = IntegerField(
-            # 标签
-            label='score',
-            # 验证器
-            validators=[
-                DataRequired("姓名不能为空"),
-                NumberRange(0, 100, "分数在0-100之间"),
-            ],
-            description="评价分数",
-            render_kw={
-                "class": "form-control",
-                'id': "score",
-                "placeholder": "分数在0-100之间"
-            }
-        )
-        # 评语
-        words = TextAreaField(
-            # 标签
-            label='words',
-            description="本次课的评价",
-            render_kw={
-                "class": "form-control",
-                'id': "words",
-                "placeholder": "对老师的评价（选填）"
-            }
-        )
-        # 提交注册信息
-        submit = SubmitField(
-            # 标签
-            label='提交注册信息',
-            render_kw={
-                "class": "btn btn-primary div2",
-                # "id": "submit"
-            }
-        )
+class teacher_evaluate_form(FlaskForm):
+    # 评价分数
+    score = IntegerField(
+        # 标签
+        label='score',
+        # 验证器
+        validators=[
+            DataRequired("姓名不能为空"),
+            NumberRange(0, 100, "分数在0-100之间"),
+        ],
+        description="评价分数",
+        render_kw={
+            "class": "form-control",
+            'id': "score",
+            "placeholder": "分数在0-100之间"
+        }
+    )
+    # 评语
+    words = TextAreaField(
+        # 标签
+        label='words',
+        description="本次课的评价",
+        render_kw={
+            "class": "form-control",
+            'id': "words",
+            "placeholder": "对老师的评价（选填）"
+        }
+    )
+    # 提交注册信息
+    submit = SubmitField(
+        # 标签
+        label='提交注册信息',
+        render_kw={
+            "class": "btn btn-primary div2",
+            # "id": "submit"
+        }
+    )

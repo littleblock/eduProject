@@ -11,7 +11,7 @@ from app.models import wrong_ques_table, wrong_ques_review, teacher_info, teache
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask import render_template, session, url_for, request, flash, redirect
-from .teacher_info_form import teacher_info_form，teacher_evaluate_form
+from .teacher_info_form import teacher_info_form,teacher_evaluate_form
 import base64
 
 # 上传文件总目录
@@ -20,27 +20,14 @@ UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), "upload
 TEACHER_PHOTO_FOLDER = os.path.join(UPLOAD_FOLDER, "teacher_photo")
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 Basic_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg'
-grade = ["一年级","二年级","三年级","四年级","五年级","六年级","初一","初二","初三","高一","高二","高三"]
+grade = ["大一","大二","大三","大四","研一","研二","研三"]
+adv_grade = ["一年级", "二年级", "三年级", "四年级", "五年级" , "六年级", "初一", "初二" , "初三" , "高一" , "高二" , "高三"]
 model = ["实数与不等式","函数","简单平面几何","圆","相似与全等较难问题","统计概率","全部擅长"]
 basedir = os.path.abspath(os.path.dirname(__file__))
 
 
 def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
-
-
-'''   跳转页面失败
-@admin.route('/upload_file', methods=['GET', 'POST'])
-def upload_file():
-    if request.method == 'POST':
-        file = request.files['file']
-        if file and allowed_file(file.filename):
-            file.save(os.path.join(UPLOAD_FOLDER, file.filename))
-            return '<p>success</p>'
-        else:
-            return '<p> 你上传了不允许的文件类型 </p>'
-    return render_template("/admin/Teacher/upload.html")
-'''
 
 
 @admin.route("/teacher_evaluate", methods=["Get", "POST"])
@@ -64,26 +51,6 @@ def teacher_evaluate():
     return render_template("/admin/Teacher/teacher_evaluation.html", form=form)
 
 
-''' 上传图片失败
-def editorData(name):
-    #生成随机字符串，防止图片名字重复
-    ran_str = ''.join(random.sample(string.ascii_letters + string.digits, 16))
-    #获取图片文件 name = upload
-    img = name.read()
-    #定义一个图片存放的位置 存放在static下面
-    path = basedir+"\\static\\upload\\"
-    #图片名称 给图片重命名 为了图片名称的唯一性
-    imgName = ran_str+img.filename
-    #图片path和名称组成图片的保存路径
-    file_path = path+imgName
-    #保存图片
-    img.save(file_path)
-    #这个是图片的访问路径，需返回前端（可有可无）
-    url = '/static/upload/'+imgName
-    return url
-'''
-
-
 @admin.route("/teacher_info_input", methods=["Get", "POST"])
 def teacher_info_input():
     form = teacher_info_form()
@@ -103,21 +70,21 @@ def teacher_info_input():
         photo_name = change_name(file_name)
         save_photo(photo_name, form)
 
-        '''
-        if data["photo"] == '':
-            photo = Basic_photo
+        if data["experience"] == 1:
+            ex = "有"
         else:
-            photo = data["photo"]  # 此处加保存图片程序
-        '''
+            ex = "没有"
         info = teacher_info(
                             name=data["name"],
                             head_photo=photo_name,
-                            age=data["age"],
+                            chat=data["chat"],
                             school=data["school"],
                             major=data["major"],
                             introduce=data["introduction"],
                             adv_model=models,
                             adv_grade=grades,
+                            grade = grade[data["grade"] - 1],
+                            experience=ex,
                             creator="whc",  # 写死先
                             create_time=datetime.now(),
                             last_modify_user="whc",  # 写死先
