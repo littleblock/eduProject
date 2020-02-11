@@ -18,7 +18,13 @@ from wtforms.widgets import ListWidget, CheckboxInput
 
 class teacher_info_form(FlaskForm):
     # 头像
-    photo = FileField("")
+    photo = FileField(
+        label = '头像',
+        description = '封面',
+        render_kw = {
+            "class": "form-control-file"
+        }
+    )
     # 姓名
     name = StringField(
         # 标签
