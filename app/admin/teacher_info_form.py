@@ -201,6 +201,29 @@ class teacher_info_form(FlaskForm):
             "placeholder": "自我介绍内容"
         }
     )
+    #教师分类
+    # 有无家教经验
+    classify = SelectField(
+        # 标签
+        label='classify',
+        # 验证器
+        validators=[
+            DataRequired("至少选择一项")
+        ],
+        description="教师分类",
+        render_kw={
+            "id": "experience",
+            "placeholder": "请至少选择一项"
+        },
+        choices=[
+            (0, '未决定'),
+            (1, '计划制定教师'),
+            (2, '辅导教师'),
+            (3, '错题诊断教师'),
+        ],
+        default=3,
+        coerce=int
+    )
     #提交注册信息
     info_submit = SubmitField(
         # 标签
@@ -248,7 +271,7 @@ class teacher_evaluate_form(FlaskForm):
     # 提交注册信息
     submit = SubmitField(
         # 标签
-        label='提交注册信息',
+        label='提交',
         render_kw={
             "class": "btn btn-primary div2",
             # "id": "submit"

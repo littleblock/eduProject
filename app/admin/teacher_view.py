@@ -63,7 +63,7 @@ def teacher_info_input():
             models += model[v - 1] + ";"
         grade_list = form.adv_grade.data
         for v in grade_list:
-            grades += grade[v - 1] + ";"
+            grades += adv_grade[v - 1] + ";"
 
         # 上传图片
         file_name = secure_filename(form.photo.data.filename)
@@ -111,3 +111,26 @@ def save_photo(photo, form):
         os.makedirs(TEACHER_PHOTO_FOLDER)
     # 保存文件
     form.photo.data.save(TEACHER_PHOTO_FOLDER + "/" + photo)
+
+# 学段列表
+@admin.route("/info_list/<int:page>", methods = ["GET", "POST"])
+def info_list(page = None):
+    # 默认page初始值为None，永远先跳转到第一页
+    if page is None:
+        page = 1
+    page_datas = teacher_info.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+
+    return render_template("/admin/Teacher/info_list.html", title = "老师信息列表", page_data = page_datas)
+
+
+@admin.route("teacher_type_edit/<id>", methods = ["GET", "POST"])
+def teacher_type_edit(id):
+    form = teacher_info_form()
+    clas = teacher_info.query.filter(teacher_info.teacher_id == id).first()
+    if request.method == 'POST':
+        data = form.data
+        classify = data["classify"]
+        clas.classify = classify
+        db.session.commit()
+        return redirect(url_for("admin.info_list" , page = 1))
+    return render_template("/admin/Teacher/teacher_classify_edit.html", title = "修改老师类别", form = form)

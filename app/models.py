@@ -40,6 +40,8 @@ class teacher_info(db.Model):
     chat = db.Column(db.String(100), nullable=False)
     #头像照片
     head_photo = db.Column(db.String(200), nullable=False)
+    #教师分类 0--还未分类 1--计划制定教师 2--辅导教师 3--错题诊断教师
+    classify = db.Column(db.Integer, default=0)
     #毕业学校
     school = db.Column(db.String(50), nullable=False)
     #专业

@@ -1,0 +1,60 @@
+<!--
+Author: wanghaochen
+Time: 2020/02/12
+-->
+
+{% extends "admin/layout.html" %}
+{% import "admin/page.html" as pg %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>姓名</th>
+            <th>年纪</th>
+            <th>所学专业</th>
+            <th>毕业学校</th>
+            <th>有无家教经验</th>
+            <th>创建人</th>
+            <th>创建时间</th>
+            <th>分类修改</th>
+        </tr>
+    </thead>
+    {% for v in page_data.items %}
+        <tr>
+            <td>{{ v.name }}</td>
+            <td>{{ v.grade }}</td>
+            <td>{{ v.major }}</td>
+            <td>{{ v.school}}</td>
+            <td>{{ v.experience}}</td>
+            <td>{{ v.creator }}</td>
+            <td>{{ v.create_time }}</td>
+            <form method="post">
+            <td>
+            <a href="{{url_for('admin.teacher_type_edit', id = v.teacher_id)}}"  class="btn btn-sm btn-outline-warning">修改</a>
+            </td>
+            </form>
+        </tr>
+    {% endfor %}
+</table>
+{{ pg.page(page_data, 'admin.info_list') }}
+{% endblock %}
+
+
+{% block js %}
+<!-- 列表栏点击效果显示 -->
+<script>
+    $(document).ready(function () {
+        $("#d2").addClass("active");
+    });
+</script>
+{% endblock %}
