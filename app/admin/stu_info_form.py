@@ -69,13 +69,20 @@ from flask_sqlalchemy import SQLAlchemy
 #
 
 '''
-信息录入表单
+信息录入表单 分为基础信息和成绩信息两个表单
 1. 基础信息：姓名、学校、初创年级
 2. 成绩信息：考试成绩、考试所属年级、考试类型、单元名
 3. 保存按钮
 '''
 
-class stu_info_add(FlaskForm):
+class stu_basic_info_add(FlaskForm):
+    stu_profile = FileField(
+        label = '头像',
+        description = '封面',
+        render_kw = {
+            "class": "form-control-file"
+        }
+    )
     stu_name = StringField(
         # 标签
         label = 'stu_name',
@@ -106,21 +113,46 @@ class stu_info_add(FlaskForm):
             "placeholder": "请输入学校哦!"
         }
     )
-    creat_class = IntegerField(
+    creat_class = SelectField(
         # 标签
         label = 'creat_class',
         # 验证器
         validators = [
             DataRequired("年级不能为空哦！"),
-            NumberRange(1, 12, message="必须是1-12年级哦！")
         ],
         description = "年级",
         render_kw = {
             "class": "form-control",
             'id': "creat_class",
             "placeholder": "请输入年级哦!"
+        },
+        choices = [
+            (1, '一年级'),
+            (2, '二年级'),
+            (3, '三年级'),
+            (4, '四年级'),
+            (5, '五年级'),
+            (6, '六年级'),
+            (7, '初一'),
+            (8, '初二'),
+            (9, '初三'),
+            (10, '高一'),
+            (11, '高二'),
+            (12, '高三'),
+                  ],
+        default = 1,
+        coerce = int
+    )
+    basic_submit = SubmitField(
+        # 标签
+        label = '保存个人信息',
+        render_kw = {
+            "class": "btn btn-primary div2",
+            "id": "basic_submit"
         }
     )
+
+class stu_score_info_add(FlaskForm):
     score_offline = IntegerField(
         # 标签
         label = 'score_offline',
@@ -160,19 +192,34 @@ class stu_info_add(FlaskForm):
         default = 5,
         coerce = int
     )
-    score_exclass = IntegerField(
+    score_exclass = SelectField(
         # 标签
         label='score_exclass',
         # 验证器
         validators=[
             DataRequired("本次考试所属年级不能为空哦！"),
-            NumberRange(0, 12, message="必须是0-150分哦！")
         ],
         description="考试所属年级",
         render_kw={
             "class": "form-control",
             "placeholder": "请输入考试所属年级哦!"
-        }
+        },
+        choices=[
+            (1, '一年级'),
+            (2, '二年级'),
+            (3, '三年级'),
+            (4, '四年级'),
+            (5, '五年级'),
+            (6, '六年级'),
+            (7, '初一'),
+            (8, '初二'),
+            (9, '初三'),
+            (10, '高一'),
+            (11, '高二'),
+            (12, '高三'),
+        ],
+        default=1,
+        coerce=int
     )
     exam_info = StringField(
         # 标签
@@ -189,29 +236,23 @@ class stu_info_add(FlaskForm):
             "placeholder": "请输入单元名称哦!"
         }
     )
-    '''
-    basic_submit = SubmitField(
-        # 标签
-        label = '保存个人信息',
-        render_kw = {
-            "class": "btn btn-primary",
-            "id": "basic_submit"
-        }
-    )
-    '''
     score_submit = SubmitField(
         # 标签
         label='保存成绩信息',
         render_kw={
             "class": "btn btn-primary div2",
-            # "id": "score_submit"
+            "id": "score_submit"
         }
     )
 
 
 # '''
 # 信息修改表单
-# 1.
-# 2.
+# 1.修改基本信息
+# 2.修改成绩信息
 # '''
-# def stu_info_edit(FlaskForm):
+# def stu_basic_info_edit(FlaskForm):
+#
+#
+#
+# def stu_score_info_edit(FlaskForm):
