@@ -5,9 +5,9 @@ import os
 import string
 import random
 import uuid
-
+import xlrd
 from . import admin
-from app.models import wrong_ques_table, wrong_ques_review, teacher_info, teacher_evaluation, db
+from app.models import wrong_ques_table, wrong_ques_review, teacher_info,teacher_evaluation,classroom,stu_info_table,db
 from datetime import datetime
 from werkzeug.utils import secure_filename
 from flask import render_template, session, url_for, request, flash, redirect
@@ -134,3 +134,75 @@ def teacher_type_edit(id):
         db.session.commit()
         return redirect(url_for("admin.info_list" , page = 1))
     return render_template("/admin/Teacher/teacher_classify_edit.html", title = "修改老师类别", form = form)
+
+
+#班级管理
+@admin.route("/class_stu_list/<int:page>", methods = ["GET", "POST"])
+def class_stu_list(page = None):
+    # 默认page初始值为None，永远先跳转到第一页
+    if page is None:
+        page = 1
+    page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+
+    return render_template("/admin/Teacher/class_manage.html", title = "班级管理", page_data = page_datas)
+
+@admin.route("/class_edit/<id>", methods = ["GET", "POST"])
+def class_edit(id):
+    teach = teacher_info.query.filter(teacher_info.is_del == 0)
+    return render_template("/admin/Teacher/class_edit.html", title="选择教课老师",teacher = teach, stu_id = id)
+
+@admin.route("/class_sure/", methods = ["GET", "POST"])
+def class_sure():
+    id_stu = request.args.get("student_id")
+    id_teacher = request.args.get("teacher_id")
+    clas = classroom(
+        student_id=id_stu,
+        teacher_id=id_teacher,
+        creator="whc",  # 写死先
+        create_time=datetime.now(),
+        last_modify_user="whc",  # 写死先
+        last_modify_time=datetime.now(),
+        is_del=0,
+    )
+    db.session.add(clas)
+    db.session.commit()
+    page = 1
+    page_datas = teacher_info.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+    return render_template("/admin/Teacher/class_manage.html", title = "班级管理", page_data = page_datas)
+
+@admin.route("/read_teachinfo_excel/", methods = ["GET", "POST"])
+def read_teachinfo_excel():
+    wb = xlrd.open_workbook(filename=r"C:\Users\whc\Desktop\线上家教个人信息.xls")  # 打开文件
+    sheet = wb.sheet_by_name("Sheet1")
+    sheet_name = sheet.col_values(0)
+    sheet_grade = sheet.col_values(4)
+    sheet_major = sheet.col_values(3)
+    sheet_school = sheet.col_values(2)
+    sheet_chat = sheet.col_values(1)
+    sheet_adv_grade = sheet.col_values(5)
+    sheet_adv_model = sheet.col_values(6)
+    sheet_experience = sheet.col_values(7)
+    sheet_introduce = sheet.col_values(8)
+
+    for col in range(1,sheet.nrows):
+        info = teacher_info(
+            name=sheet_name[col],
+            head_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg',
+            chat=sheet_chat[col],
+            school=sheet_school[col],
+            major=sheet_major[col],
+            introduce=sheet_introduce[col],
+            adv_model=sheet_adv_model[col],
+            adv_grade=sheet_adv_grade[col],
+            classify = 0,
+            grade=sheet_grade[col],
+            experience=sheet_experience[col],
+            creator="whc",  # 写死先
+            create_time=datetime.now(),
+            last_modify_user="whc",  # 写死先
+            last_modify_time=datetime.now(),
+            is_del=0,
+        )
+        db.session.add(info)
+        db.session.commit()
+    return "ye"

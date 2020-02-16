@@ -1,0 +1,52 @@
+<!--
+Author: wanghaochen
+Time: 2020/02/12
+-->
+
+{% extends "admin/layout.html" %}
+{% import "admin/page.html" as pg %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+    <table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>老师姓名</th>
+            <th>年纪</th>
+            <th>学校</th>
+            <th>确定</th>
+        </tr>
+    </thead>
+    {% for v in teacher.items %}
+        <tr>
+            <td>{{ v.name }}</td>
+            <td>{{ v.grade }}</td>
+            <td>{{ v.school }}</td>
+            <td>
+                <form action = "reg" method = "post">
+                    <a href="{{url_for('admin.class_sure', teacher_id = v.teacher_id, student_id = stu_id)}}"  class="btn btn-sm btn-outline-warning">确定</a>
+                </form>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+
+{% endblock %}
+
+
+{% block js %}
+<!-- 列表栏点击效果显示 -->
+<script>
+    $(document).ready(function () {
+        $("#d2").addClass("active");
+    });
+</script>
+{% endblock %}

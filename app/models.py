@@ -29,32 +29,55 @@ app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 
 
+# 班级表
+class classroom(db.Model):
+    __tablename__ = 'classroom'
+    # id
+    id = db.Column(db.Integer, primary_key=True)
+    # 学生id
+    student_id = db.Column(db.BigInteger, nullable=False)
+    # 老师id
+    teacher_id = db.Column(db.Integer, db.ForeignKey("teacher_info.teacher_id"))
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<classroom %r>" % self.name
+
 # 教师信息表
 class teacher_info(db.Model):
     __tablename__ = 'teacher_info'
-    #教师id
+    # 教师id
     teacher_id = db.Column(db.Integer, primary_key=True)
-    #姓名
+    # 姓名
     name = db.Column(db.String(50), nullable=False)
-    #微信号
+    # 微信号
     chat = db.Column(db.String(100), nullable=False)
-    #头像照片
+    # 头像照片
     head_photo = db.Column(db.String(200), nullable=False)
-    #教师分类 0--还未分类 1--计划制定教师 2--辅导教师 3--错题诊断教师
+    # 教师分类 0--还未分类 1--计划制定教师 2--辅导教师 3--错题诊断教师
     classify = db.Column(db.Integer, default=0)
-    #毕业学校
+    # 毕业学校
     school = db.Column(db.String(50), nullable=False)
-    #专业
+    # 专业
     major = db.Column(db.String(50), nullable=False)
-    #擅长模块
+    # 擅长模块
     adv_model = db.Column(db.String(200), nullable=False)
-    #擅长教学年纪
+    # 擅长教学年纪
     adv_grade = db.Column(db.String(200), nullable=False)
-    #年纪
+    # 年纪
     grade = db.Column(db.String(200), nullable=False)
-    #有无家教经验
+    # 有无家教经验
     experience = db.Column(db.String(10), nullable=False)
-    #自我介绍
+    # 自我介绍
     introduce = db.Column(db.String(200), nullable=True)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
@@ -68,6 +91,8 @@ class teacher_info(db.Model):
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 老师评价表外键连接
     teacher_evalu = db.relationship('teacher_evaluation', backref='teacher_info')
+    # 班级表外键链接
+    teacher_class = db.relationship('classroom', backref='teacher_info')
 
     def __repr__(self):
         return "<teacher_info %r>" % self.name
@@ -76,13 +101,13 @@ class teacher_info(db.Model):
 # 老师评价表
 class teacher_evaluation(db.Model):
     __tablename__ = 'teacher_evaluation'
-    #id
+    # id
     id = db.Column(db.Integer, primary_key=True)
-    #教师id
+    # 教师id
     teacher_id = db.Column(db.Integer, db.ForeignKey("teacher_info.teacher_id"), nullable=False)
-    #评价分数
+    # 评价分数
     score = db.Column(db.Integer, nullable=False)
-    #学生评价
+    # 学生评价
     evaluation = db.Column(db.String(200), nullable=True)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
