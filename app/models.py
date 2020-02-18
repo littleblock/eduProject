@@ -10,6 +10,7 @@ from datetime import datetime
 # 生成数据表后，记得再重新注释上
 
 
+'''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -21,12 +22,13 @@ app.debug = True
 #app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 
 # whc的本地数据库
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
+# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
-# app.config['SQLALCHEMY_DATABASE_URI'] = 'mysql://root:y783187105@localhost:3306/flask_sql_demo'
+app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:yujian@127.0.0.1:3306/edu"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
+'''
 
 
 # 教师信息表
@@ -162,7 +164,7 @@ class wrong_ques_review(db.Model):
 # 学生基础信息表模型
 class stu_info_table(db.Model):
     # 定义表名
-    __tablename__ = 'stu_basic_info'
+    __tablename__ = 'stu_info_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生姓名
@@ -173,6 +175,10 @@ class stu_info_table(db.Model):
     creat_class = db.Column(db.Integer, nullable=False)
     # 学生当前年级
     stu_class = db.Column(db.Integer, nullable=False)
+    # 头像照片
+    stu_profile = db.Column(db.String(200), nullable=False)
+    # 学校表外键
+    school_id = db.Column(db.BigInteger, db.ForeignKey('school_table.id'), nullable=False)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -183,7 +189,7 @@ class stu_info_table(db.Model):
     last_modify_time = db.Column(db.DateTime, default=datetime.now)
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
-    # 学生成绩信息表晚间连接
+    # 学生成绩信息表外键连接
     score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
 
     def __repr__(self):
@@ -195,9 +201,9 @@ class stu_score_table(db.Model):
     # 定义表名
     __tablename__ = 'stu_socre_table'
     # 主键
-    id = db.Column(db.BigInteger, primary_key=True, unique=True, autoincrement=True)
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生编号，与上表的id对应，作为上表外键
-    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_basic_info.id'), nullable=False)
+    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_info_table.id'), nullable=False)
     # 学生录入的考试成绩
     score_offline = db.Column(db.Integer, nullable=False)
     # 考试所属年级
@@ -218,8 +224,38 @@ class stu_score_table(db.Model):
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
     def __repr__(self):
-        return "<stu_score_table %r>" % self.name
+        return "<school_table %r>" % self.name
 
+
+# 学校表
+class school_table(db.Model):
+    # 定义表名
+    __tablename__ = 'school_table'
+    # 主键
+    id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    # 学校所属省级行政区（省、自治区、直辖市、特别行政区）
+    school_province = db.Column(db.String(30), nullable=False)
+    # 学校所属地级行政区（地级市、地区、自治州、盟）
+    school_prefecture = db.Column(db.String(30), nullable=True)
+    # 学校所属县级行政区（市辖区、县级市、县、自治县、旗、自治旗、林区、特区）
+    school_county = db.Column(db.String(30), nullable=True)
+    # 学校所属乡级行政区（镇、乡、民族乡、〔街道办事处/地区办事处管辖区域〕、苏木、民族苏木）
+    school_countryside = db.Column(db.String(30), nullable=True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+    # 学生基础信息表外键连接
+    info_tables = db.relationship('stu_info_table', backref='school_table')
+
+    def __repr__(self):
+        return "<stu_score_table %r>" % self.name
 
 
 # 学科表
@@ -578,9 +614,9 @@ class question_knowledge_relation(db.Model):
 
 
 
-#if __name__ == "__main__":
-
-    #db.drop_all()
-    #db.create_all()
+# if __name__ == "__main__":
+#
+#     db.drop_all()
+#     db.create_all()
 
 

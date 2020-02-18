@@ -76,7 +76,7 @@ from flask_sqlalchemy import SQLAlchemy
 '''
 
 class stu_basic_info_add(FlaskForm):
-    stu_profile = FileField(
+    photo = FileField(
         label = '头像',
         description = '封面',
         render_kw = {
@@ -95,7 +95,7 @@ class stu_basic_info_add(FlaskForm):
         render_kw = {
             "class": "form-control",
             "id": "stu_name",
-            "placeholder": "请输入账号哦!"
+            "placeholder": "请输入姓名哦!"
         }
     )
     stu_school = StringField(
@@ -113,9 +113,9 @@ class stu_basic_info_add(FlaskForm):
             "placeholder": "请输入学校哦!"
         }
     )
-    creat_class = SelectField(
+    create_class = SelectField(
         # 标签
-        label = 'creat_class',
+        label = 'create_class',
         # 验证器
         validators = [
             DataRequired("年级不能为空哦！"),
@@ -123,7 +123,7 @@ class stu_basic_info_add(FlaskForm):
         description = "年级",
         render_kw = {
             "class": "form-control",
-            'id': "creat_class",
+            'id': "create_class",
             "placeholder": "请输入年级哦!"
         },
         choices = [
@@ -147,7 +147,7 @@ class stu_basic_info_add(FlaskForm):
         # 标签
         label = '保存个人信息',
         render_kw = {
-            "class": "btn btn-primary div2",
+            "class": "btn btn-primary",
             "id": "basic_submit"
         }
     )
@@ -180,7 +180,8 @@ class stu_score_info_add(FlaskForm):
         render_kw = {
             "class": "form-control",
             "id": "score_exsort",
-            "placeholder": "请输入考试类型哦!"
+            "placeholder": "请输入考试类型哦!",
+            "onchange": "showinput(this);"
         },
         choices = [
             (1, '月考'),
@@ -189,7 +190,7 @@ class stu_score_info_add(FlaskForm):
             (4, '联考'),
             (5, '单元考试')
                    ],
-        default = 5,
+        default = 1,
         coerce = int
     )
     score_exclass = SelectField(
@@ -240,7 +241,7 @@ class stu_score_info_add(FlaskForm):
         # 标签
         label='保存成绩信息',
         render_kw={
-            "class": "btn btn-primary div2",
+            "class": "btn btn-primary",
             "id": "score_submit"
         }
     )

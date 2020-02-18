@@ -26,9 +26,7 @@ Time: 2020/01/29
 
         <nav>
         	<div>
-            	<a href="../stu_ques_add.html">
-            	添加错题
-            	</a>
+
             </div>
         </nav>
 
@@ -42,6 +40,9 @@ Time: 2020/01/29
                 	<legend>个人基础信息</legend>
                         <div>
                             <div class="div1">
+                                <label>头像:</label>
+                                {{ basic_form.photo }}
+                                <br><br>
                                 <label>姓名:</label>
                                 {{ basic_form.stu_name }}
                                 <br><br>
@@ -71,7 +72,7 @@ Time: 2020/01/29
                             </div>
                             <div class="div1">
                                 <label>年级:</label>
-                                {{ basic_form.creat_class }}
+                                {{ basic_form.create_class }}
                             </div>
                         </div>
                         <div>
