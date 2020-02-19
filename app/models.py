@@ -9,6 +9,7 @@ from datetime import datetime
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
 # 生成数据表后，记得再重新注释上
 
+
 '''
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
@@ -163,7 +164,7 @@ class wrong_ques_review(db.Model):
 # 学生基础信息表模型
 class stu_info_table(db.Model):
     # 定义表名
-    __tablename__ = 'stu_basic_info'
+    __tablename__ = 'stu_info_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生姓名
@@ -222,7 +223,6 @@ class stu_score_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
-
     def __repr__(self):
         return "<stu_score_table %r>" % self.name
 
@@ -233,6 +233,8 @@ class school_table(db.Model):
     __tablename__ = 'school_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    # 学校名称
+    school_name = db.Column(db.String(128), nullable=False)
     # 学校所属省级行政区（省、自治区、直辖市、特别行政区）
     school_province = db.Column(db.String(30), nullable=False)
     # 学校所属地级行政区（地级市、地区、自治州、盟）
@@ -613,7 +615,10 @@ class question_knowledge_relation(db.Model):
 
 
 
-if __name__ == "__main__":
 
-    # db.drop_all()
-    db.create_all()
+# if __name__ == "__main__":
+#
+#     db.drop_all()
+#     db.create_all()
+
+
