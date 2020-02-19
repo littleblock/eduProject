@@ -190,10 +190,10 @@ class stu_info_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 学生成绩信息表外键连接
-    score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
+    stu_score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
 
     def __repr__(self):
-        return "<stu_info_table %r>" % self.name
+        return "<stu_info_table %r>" % self.stu_name
 
 
 # 学生成绩信息表模型
@@ -224,7 +224,7 @@ class stu_score_table(db.Model):
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
     def __repr__(self):
-        return "<school_table %r>" % self.name
+        return "<stu_score_table %r>" % self.stu_id
 
 
 # 学校表
@@ -233,6 +233,8 @@ class school_table(db.Model):
     __tablename__ = 'school_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
+    # 学校名称
+    school_name = db.Column(db.String(128), nullable=False)
     # 学校所属省级行政区（省、自治区、直辖市、特别行政区）
     school_province = db.Column(db.String(30), nullable=False)
     # 学校所属地级行政区（地级市、地区、自治州、盟）
@@ -255,7 +257,7 @@ class school_table(db.Model):
     info_tables = db.relationship('stu_info_table', backref='school_table')
 
     def __repr__(self):
-        return "<stu_score_table %r>" % self.name
+        return "<school_table %r>" % self.school_name
 
 
 # 学科表
