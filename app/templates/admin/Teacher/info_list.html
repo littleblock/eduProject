@@ -8,7 +8,28 @@ Time: 2020/02/12
 
 {% block css %}
 <!-- 表格内容垂直居中 -->
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
+
 <style>
+    .tit{
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: large;
+        color: white;
+        background-color: #33cabb;
+        border-radius: 5px;
+        border-color: #00a0e9;
+        border-width: 10px;
+        border: 2px;
+    }
+    .backi{
+        background-color: #fff;
+        background: url("http://127.0.0.1:8888/static/upload/background.png");
+        width: auto;
+        height: auto;
+
+    }
     .table td, .table th {
         vertical-align: middle;
     }
@@ -19,14 +40,14 @@ Time: 2020/02/12
 <table class="table table-bordered">
     <thead>
         <tr>
-            <th>姓名</th>
-            <th>年纪</th>
-            <th>所学专业</th>
-            <th>毕业学校</th>
-            <th>有无家教经验</th>
-            <th>创建人</th>
-            <th>创建时间</th>
-            <th>分类修改</th>
+            <th class = tit>姓名</th>
+            <th class = tit>年纪</th>
+            <th class = tit>所学专业</th>
+            <th class = tit>毕业学校</th>
+            <th class = tit>有无家教经验</th>
+            <th class = tit>创建人</th>
+            <th class = tit>创建时间</th>
+            <th class = tit>分类修改</th>
         </tr>
     </thead>
     {% for v in page_data.items %}

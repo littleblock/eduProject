@@ -1,16 +1,33 @@
 {% extends "admin/layout.html" %}
-
 {% block content %}
+<script type="text/javascript">
+   function dj(score){
+        $("#score").val(score);
+        var star = document.getElementsByTagName("img");
+        for(var i = 0 ; i < star.length ; i++){
+            star[i].setAttribute("src", "/static/upload/star_empty.PNG");
+        }
+        for(var i = 0 ; i < score ; i++){
+            star[i].setAttribute("src", "/static/upload/star.PNG");
+        }
+      }
+</script>
+<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
+    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 <form method="post">
     {% for msg in get_flashed_messages(category_filter=['ok']) %}
     <p style="color: red">{{ msg }}</p>
     {% endfor %}
     <div class="form-group">
         <label>给老师打分</label>
-        {{ form.score }}
-        {% for v in form.score.errors %}
-            <p style="color: red">{{ v }}</p>
-        {% endfor %}
+        <body>
+            <a href="javascript:dj(1);" class="img"><img src="/static/upload/star_empty.PNG"/></a>
+            <a href="javascript:dj(2);" class="img"><img src="/static/upload/star_empty.PNG"/></a>
+            <a href="javascript:dj(3);" class="img"><img src="/static/upload/star_empty.PNG"/></a>
+            <a href="javascript:dj(4);" class="img"><img src="/static/upload/star_empty.PNG"/></a>
+            <a href="javascript:dj(5);" class="img"><img src="/static/upload/star_empty.PNG"/></a>
+        </body>
     </div>
     <div class="form-group">
         <label>对这节课的评价</label>

@@ -214,6 +214,7 @@ class teacher_info_form(FlaskForm):
         render_kw={
             "id": "experience",
             "placeholder": "请至少选择一项"
+            
         },
         choices=[
             (0, '未决定'),

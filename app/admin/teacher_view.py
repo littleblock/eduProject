@@ -35,9 +35,10 @@ def teacher_evaluate():
     form = teacher_evaluate_form()
     if form.validate_on_submit():
         data = form.data
+        score = request.args.get("score")
         evaluation = teacher_evaluation(id=1000,  # 写死
                                         teacher_id=1001,  # 写死先
-                                        score=data["score"],
+                                        score=score,
                                         evaluation=data["words"],
                                         creator="whc",  # 写死先
                                         create_time=datetime.now(),

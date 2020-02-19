@@ -3,6 +3,44 @@ Author: qixuanye
 Time: 2020/02/03
 后台菜单栏
 -->
+<style>
+.u1,a1{
+            font-size: 20px;
+            list-style: none;
+            text-decoration: none;
+            background-color: white;
+            width: 158px;
+            text-align: center;
+            border: 0px solid black;
+            border-radius: 5px;
+            margin-top: 1px;
+
+        }
+        .a1{
+            display: block;
+            font-size: large;
+            background-color: white;
+            width: 158px;
+        }
+
+        .plat{
+            display: none;
+        }
+        .nav{
+             float: left;
+             margin-left: 0px;
+         }
+        .nav:hover .plat{
+            display: list-item;
+            clear: both;
+            margin:0px;padding:0px
+        }
+        .plat li:hover>a{
+            float:left;
+            margin:0px;padding:0px
+        }
+    </style>
+
 <div class="col-md-2">
     <div class="list-group">
         <a id="w1" href="/admin/ques_input" class="list-group-item list-group-item-action">添加错题</a>
@@ -15,7 +53,12 @@ Time: 2020/02/03
         <a id="c1" href="/admin/knowledge_level1/add" class="list-group-item list-group-item-action">添加一级知识点</a>
         <a id="c2" href="/admin/knowledge/list/1" class="list-group-item list-group-item-action">知识点列表</a>
         <a id="c3" href="/admin/knowledge/list/1" class="list-group-item list-group-item-action">知识点列表</a>
-        <a id="d1" href="/admin/teacher_info_input" class="list-group-item list-group-item-action">填写教师信息</a>
-        <a id="d2" href="/admin/info_list/1" class="list-group-item list-group-item-action">老师信息列表</a>
+        <ul  class="nav">
+        <a href="#" class="list-group-item list-group-item-action">教师信息  </a>
+            <ul  class="plat">
+                <a class = "a1" id="d1" href="/admin/teacher_info_input" class="list-group-item list-group-item-action" style = "white-space: nowrap" >填写教师信息</a>
+                <a class = "a1" id="d2" href="/admin/info_list/1" class="list-group-item list-group-item-action" style = "white-space: nowrap">老师信息列表</a>
+            </ul>
+        </ul>
     </div>
 </div>
