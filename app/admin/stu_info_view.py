@@ -2,6 +2,7 @@
 # @Author: qixuanye
 # @Time: 2020/1/21 19:55
 import os
+import time
 import uuid
 
 import pymysql
@@ -74,7 +75,7 @@ def allowed_file(filename):
     return '.' in filename and filename.rsplit('.', 1)[1] in ALLOWED_EXTENSIONS
 
 # 定义可以上传的头像文件类型
-'''   跳转页面失败
+#    跳转页面失败
 @admin.route('/upload_file', methods=['GET', 'POST'])
 def upload_file():
     if request.method == 'POST':
@@ -85,7 +86,7 @@ def upload_file():
         else:
             return '<p> 你上传了不允许的文件类型 </p>'
     return render_template("/admin/Teacher/upload.html")
-'''
+
 
 '''
 录入功能
@@ -96,14 +97,18 @@ def upload_file():
 # @user_login_req
 def basic_info_add():
     basic_form = stu_basic_info_add()
+    print(basic_form.validate_on_submit())
     if basic_form.validate_on_submit():
+        # time.sleep(10)
+        data =basic_form.data
         # 获取学生姓名，学校，初始年级
-        stu_name = request.form.get("stu_name")
-        stu_school = request.form.get("stu_school")
-        creat_class = request.form.get("creat_class")
+        stu_name = data["stu_name"]
+        stu_school = data["stu_school"]
+        create_class = data["create_class"]
 
         # 上传图片
-        file_name = secure_filename(basic_form.stu_profile.data.filename)
+        # 获取文件名称（无法获取中文文件名）
+        file_name = secure_filename(basic_form.photo.data.filename)
         stu_profile_name = change_name(file_name)
         save_photo(stu_profile_name, basic_form)
 
@@ -111,11 +116,11 @@ def basic_info_add():
         stu_info_list = stu_info_table(
             stu_name = stu_name,
             stu_school = stu_school,
-            creat_class = creat_class,
-            stu_class = creat_class,
+            # create_class = create_class,
+            stu_class = create_class,
             stu_profile = stu_profile_name,
             creator = "待定",
-            creat_time = datetime.now(),
+            create_time = datetime.now(),
             last_modify_user = stu_name,
             last_modify_time = datetime.now(),
             is_del = 0
@@ -150,11 +155,12 @@ def save_photo(photo, form):
 def score_info_add():
     score_form = stu_score_info_add()
     if score_form.validate_on_submit():
+        data = score_form.data
         # 获取考试成绩，考试所属年级，考试类型，考试单元名称
-        score_offline = request.form.get("score_offline")
-        score_exclass = request.form.get("score_exclass")
-        score_exsort = request.form.get("score_exsort")
-        exam_info = request.form.get("exam_info")
+        score_offline = data["score_offline"]
+        score_exclass = data["score_exclass"]
+        score_exsort = data["score_exsort"]
+        exam_info = data["exam_info"]
         # 保存stu_score_table数据
         score_info_list = stu_score_table(
             score_offline=score_offline,
@@ -177,25 +183,23 @@ def score_info_add():
 '''
 编辑功能
 '''
-
+'''
 # 连接数据库
-def connect_server():
-    # 建立连接、拿到游标对象
-    global connect
-    connect = pymysql.connect(
-        host='127.0.0.1',
-        user='root',
-        password='y783187105',
-        db='flask_sql_demo',
-        charset='utf8'
-    )
-    # 拿到游标对象
-    global cursor
-    cursor = connect.cursor()
-
+# 建立连接、拿到游标对象
+connect = pymysql.connect(
+    host='127.0.0.1',
+    user='root',
+    password='yujian',
+    port=3306,
+    db='edu',
+    # charset='utf8'
+)
+# 拿到游标对象
+cursor = connect.cursor()
+'''
 
 # 编辑/更新基本信息
-@admin.route("/stu_info_function/edit_info", methods = ["GET", "POST"])
+@admin.route("/stu_info_function/edit_basic_info", methods = ["GET", "POST"])
 # @user_login_req
 def basic_info_edit():
     edit_form = stu_basic_info_add()
@@ -242,11 +246,11 @@ def basic_info_edit():
             redirect(url_for(admin.stu_info_view.score_info_edit))
         flash("保存成功！", "ok")
         redirect(url_for('admin.stu_info_view.stu_info_display'))
-    return render_template("/admin/stu_info/stu_add_score_info.html", title="蜻蜓教育💯学生个人信息", basic_display_form=edit_form)
+    return render_template("/admin/stu_info/stu_add_basic_info.html", title="蜻蜓教育💯学生个人信息", basic_form=edit_form)
 
 
 # 编辑/更新成绩信息
-@admin.route("/stu_info_function/edit_info", methods = ["GET", "POST"])
+@admin.route("/stu_info_function/edit_score_info", methods = ["GET", "POST"])
 # @user_login_req
 def score_info_edit():
     edit_form = stu_score_info_add()
@@ -295,7 +299,7 @@ def score_info_edit():
             redirect(url_for(admin.stu_info_view.score_info_edit))
         flash("保存成功！", "ok")
         redirect(url_for('admin.stu_info_view.stu_info_display'))
-    return render_template("/admin/stu_info/stu_add_score_info.html", title = "蜻蜓教育💯学生个人信息", score_display_form = edit_form)
+    return render_template("/admin/stu_info/stu_add_score_info.html", title = "蜻蜓教育💯学生个人信息", score_form = edit_form)
 
 
 
@@ -314,10 +318,11 @@ def stu_info_display():
     sql_data = "SELECT * FROM stu_info_table WHERE id = %s "
     # 建立字典用于存储取出的信息
     stu_basic_info_dict = {}
+
     try:
         # 使用execute()方法执行SQL语句
         # 没有学生基本信息表id，暂时先写死
-        cursor.execute(sql_data, 0 )
+        cursor.execute(sql_data, 0)
         #  一次读取全部数据，如果管道内没有数据，则返回空元组或空列表
         all_data = cursor.fetchall()
         for row in all_data:
@@ -331,7 +336,7 @@ def stu_info_display():
 
     except:
         flash("没有相关信息，请录入！", "ok")
-        redirect(url_for(app.admin.stu_info_view.basic_info_add))
+        redirect(url_for('admin.basic_info_add'))
     # 关闭游标，数据库连接
     cursor.close()
     connect.close()
@@ -350,7 +355,7 @@ def stu_score_display():
     try:
         # 使用execute()方法执行SQL语句
         # 没有学生成绩表id和学生基本信息表id，暂时先写死
-        cursor.execute(sql_data, 0, 0 )
+        cursor.execute(sql_data, 0, 0)
         #  一次读取全部数据，如果管道内没有数据，则返回空元组或空列表
         all_data = cursor.fetchall()
         for row in all_data:
@@ -365,7 +370,7 @@ def stu_score_display():
 
     except:
         flash("没有相关信息，请录入！", "ok")
-        redirect(url_for(app.admin.stu_info_view.basic_info_add))
+        redirect(url_for('admin.score_info_add'))
     # 关闭游标，数据库连接
     cursor.close()
     connect.close()

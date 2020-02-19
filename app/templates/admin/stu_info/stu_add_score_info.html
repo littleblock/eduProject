@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+    <meta charset="UTF-8">
+    <title>{{ title }}</title>
+
+</head>
+    <body>
+        <header>
+        蜻蜓教育
+        </header>
+
+        <nav>
+        	<div>
+            </div>
+        </nav>
+
+        <main>
+            <article>
+            个人信息
+            </article>
+
+                <br>
+                <fieldset>
+                	<legend>成绩信息</legend>
+                		<div>
+
+                            <label>考试成绩:</label>
+                            {{ score_form.score_offline }}
+                            <br><br>
+                            <label>考试类型:</label>
+                            {{ score_form.score_exsort }}
+                            <label>考试所属年级:</label>
+                            {{ score_form.score_exclass }}
+                            <br><br>
+                            <label id="show">单元考试名称:</label>
+                            {{ score_form.exam_info }}
+                            <div>
+                                {{ score_form.score_submit }}
+                            </div>
+                            {{ score_form.csrf_token }}
+                        </div>
+                </fieldset>
+
+
+            </form>
+
+        </main>
+        <br>
+
+        <footer>
+        	<span>Copyright @2019-2020 蜻蜓在线教育</span>
+        </footer>
+
+    <!-- bootstrap固定写法 -->
+    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+    <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+    <!-- 链接bootstrap的js文件-->
+    <script src="{{ url_for('static', filename='js/hide-exam-info.js') }}"></script>
+</body>
+</html>
