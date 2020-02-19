@@ -97,8 +97,9 @@ def upload_file():
 # @user_login_req
 def basic_info_add():
     basic_form = stu_basic_info_add()
+    print(basic_form.validate_on_submit())
     if basic_form.validate_on_submit():
-        time.sleep(10)
+        # time.sleep(10)
         data =basic_form.data
         # 获取学生姓名，学校，初始年级
         stu_name = data["stu_name"]
@@ -115,7 +116,7 @@ def basic_info_add():
         stu_info_list = stu_info_table(
             stu_name = stu_name,
             stu_school = stu_school,
-            create_class = create_class,
+            # create_class = create_class,
             stu_class = create_class,
             stu_profile = stu_profile_name,
             creator = "待定",
@@ -182,7 +183,7 @@ def score_info_add():
 '''
 编辑功能
 '''
-
+'''
 # 连接数据库
 # 建立连接、拿到游标对象
 connect = pymysql.connect(
@@ -191,11 +192,11 @@ connect = pymysql.connect(
     password='yujian',
     port=3306,
     db='edu',
-    charset='utf8'
+    # charset='utf8'
 )
 # 拿到游标对象
 cursor = connect.cursor()
-
+'''
 
 # 编辑/更新基本信息
 @admin.route("/stu_info_function/edit_basic_info", methods = ["GET", "POST"])

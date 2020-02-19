@@ -102,10 +102,6 @@ class stu_basic_info_add(FlaskForm):
         # 标签
         label = 'stu_school',
         # 验证器
-        validators = [
-            DataRequired("学校不能为空哦！"),
-            Length(1, 50, message= "必须是1-50个字哦！")
-        ],
         description = "学校",
         render_kw = {
             "class": "form-control",

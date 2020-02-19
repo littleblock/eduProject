@@ -17,87 +17,86 @@ Time: 2020/01/29
     <style type="text/css">
 
     </style>
-<!--    {% block css %}{% endblock %}-->
+    <!--    {% block css %}{% endblock %}-->
 </head>
 <body>
-        <header>
-        蜻蜓教育
-        </header>
+<header>
+    蜻蜓教育
+</header>
 
-        <nav>
-        	<div>
+<nav>
+    <div>
 
+    </div>
+</nav>
+
+<main>
+    <article>
+        个人信息
+    </article>
+
+    <form method="post" enctype="multipart/form-data">
+        <fieldset>
+            <legend>个人基础信息</legend>
+            <div>
+                <div class="div1">
+                    <label>头像:</label>
+                    {{ basic_form.photo }}
+                    <br><br>
+                    <label>姓名:</label>
+                    {{ basic_form.stu_name }}
+                    <br><br>
+                    <!-- 学校选择的弹窗 -->
+                    <label for='schoolName'>学校名称：</label><input type="text" id="schoolName" readonly/>
+                    <div id="proSchool" class="provinceSchool">
+                        <div class="title">
+                            <span>已选择:</span>
+                        </div>
+
+                        <div class="proSelect">
+                            <select></select>
+                            <span>如没找到选择项，请选择其他手动填写</span>
+                            {{ basic_form.stu_school}}
+                        </div>
+                        <div class="schoolList">
+                            <ul>
+                            </ul>
+                        </div>
+
+                        <div class="button">
+                            <button flag='0'>取消</button>
+                            <button flag='1'>确定</button>
+                        </div>
+                    </div>
+
+                </div>
+                <div class="div1">
+                    <label>年级:</label>
+                    {{ basic_form.create_class }}
+                </div>
             </div>
-        </nav>
 
-        <main>
-            <article>
-            个人信息
-            </article>
+            {{ basic_form.basic_submit }}
 
-            <form method="post" >
-                <fieldset>
-                	<legend>个人基础信息</legend>
-                        <div>
-                            <div class="div1">
-                                <label>头像:</label>
-                                {{ basic_form.photo }}
-                                <br><br>
-                                <label>姓名:</label>
-                                {{ basic_form.stu_name }}
-                                <br><br>
-                                <!-- 学校选择的弹窗 -->
-                                <label for='schoolName'>学校名称：</label><input type="text" id="schoolName" readonly />
-                                <div id="proSchool" class="provinceSchool">
-                                  <div class="title">
-                                    <span>已选择:</span>
-                                  </div>
+            {{ basic_form.csrf_token }}
+        </fieldset>
+    </form>
 
-                                  <div class="proSelect">
-                                    <select></select>
-                                    <span>如没找到选择项，请选择其他手动填写</span>
-                                    {{ basic_form.stu_school}}
-                                  </div>
-                                  <div class="schoolList">
-                                    <ul>
-                                    </ul>
-                                  </div>
+</main>
+<br>
 
-                                  <div class="button">
-                                    <button flag='0'>取消</button>
-                                    <button flag='1'>确定</button>
-                                  </div>
-                                </div>
-
-                            </div>
-                            <div class="div1">
-                                <label>年级:</label>
-                                {{ basic_form.create_class }}
-                            </div>
-                        </div>
-                        <div>
-                            {{ basic_form.basic_submit }}
-                        </div>
-                    {{ basic_form.csrf_token }}
-                </fieldset>
-            </form>
-
-        </main>
-        <br>
-
-        <footer>
-        	<span>Copyright @2019-2020 蜻蜓在线教育</span>
-        </footer>
+<footer>
+    <span>Copyright @2019-2020 蜻蜓在线教育</span>
+</footer>
 
 
-
-    <!-- bootstrap固定写法 -->
-    <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-    <script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
-    <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
-    <!-- 链接bootstrap的js文件-->
-    <script src="{{ url_for('static', filename='js/school-select-function.min.js') }}"></script>
-    <script src="{{ url_for('static', filename= 'js/school-select.min.js') }}"></script>
+<!-- bootstrap固定写法 -->
+<!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
+<script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
+<!-- 链接bootstrap的js文件-->
+<script src="{{ url_for('static', filename='js/school-select-function.min.js') }}"></script>
+<script src="{{ url_for('static', filename= 'js/school-select.min.js') }}"></script>
 
 </body>
 </html>
