@@ -197,13 +197,13 @@ class stu_info_table(db.Model):
     # 学生学校
     stu_school = db.Column(db.String(100), nullable=False)
     # 创建账户时录入的年级
-    creat_class = db.Column(db.Integer, nullable=False)
+    create_class = db.Column(db.Integer, nullable=False)
     # 学生当前年级
     stu_class = db.Column(db.Integer, nullable=False)
     # 头像照片
     stu_profile = db.Column(db.String(200), nullable=False)
     # 学校表外键
-    school_id = db.Column(db.BigInteger, db.ForeignKey('school_table.id'), nullable=False)
+    # school_id = db.Column(db.BigInteger, db.ForeignKey('school_table.id'), nullable=False)
     # 创建人
     creator = db.Column(db.String(128), nullable=False)
     # 创建时间
@@ -215,7 +215,7 @@ class stu_info_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 学生成绩信息表外键连接
-    score_tables = db.relationship('stu_score_table', backref = 'stu_basic_info')
+    score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
 
     def __repr__(self):
         return "<stu_info_table %r>" % self.name
@@ -228,7 +228,7 @@ class stu_score_table(db.Model):
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生编号，与上表的id对应，作为上表外键
-    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_basic_info.id'), nullable=False)
+    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_info_table.id'), nullable=False)
     # 学生录入的考试成绩
     score_offline = db.Column(db.Integer, nullable=False)
     # 考试所属年级
@@ -251,7 +251,7 @@ class stu_score_table(db.Model):
     def __repr__(self):
         return "<stu_score_table %r>" % self.name
 
-
+'''
 # 学校表
 class school_table(db.Model):
     # 定义表名
@@ -283,7 +283,7 @@ class school_table(db.Model):
 
     def __repr__(self):
         return "<school_table %r>" % self.name
-
+'''
 
 # 学科表
 class subject(db.Model):

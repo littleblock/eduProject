@@ -2,7 +2,6 @@
 # @Author: qixuanye
 # @Time: 2020/1/21 19:55
 import os
-import time
 import uuid
 
 import pymysql
@@ -97,9 +96,7 @@ def upload_file():
 # @user_login_req
 def basic_info_add():
     basic_form = stu_basic_info_add()
-    print(basic_form.validate_on_submit())
     if basic_form.validate_on_submit():
-        # time.sleep(10)
         data =basic_form.data
         # 获取学生姓名，学校，初始年级
         stu_name = data["stu_name"]
@@ -113,14 +110,16 @@ def basic_info_add():
         save_photo(stu_profile_name, basic_form)
 
         # 保存stu_info_table数据
+        # 暂时没有学校id，写死
         stu_info_list = stu_info_table(
             stu_name = stu_name,
             stu_school = stu_school,
-            # create_class = create_class,
+            create_class = create_class,
             stu_class = create_class,
             stu_profile = stu_profile_name,
             creator = "待定",
             create_time = datetime.now(),
+            # school_id = 1,
             last_modify_user = stu_name,
             last_modify_time = datetime.now(),
             is_del = 0
@@ -128,7 +127,7 @@ def basic_info_add():
         db.session.add(stu_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-        redirect(url_for('admin.stu_info_view.stu_info_display'))
+        redirect(url_for('admin.stu_info_display'))
     return render_template("/admin/stu_info/stu_add_basic_info.html", title = "蜻蜓教育💯学生个人信息", basic_form = basic_form)
 
 
@@ -154,6 +153,7 @@ def save_photo(photo, form):
 # uer_login_req
 def score_info_add():
     score_form = stu_score_info_add()
+    print(score_form.validate_on_submit())
     if score_form.validate_on_submit():
         data = score_form.data
         # 获取考试成绩，考试所属年级，考试类型，考试单元名称
@@ -168,7 +168,7 @@ def score_info_add():
             score_exsort=score_exsort,
             exam_info=exam_info,
             creator=stu_info_table.stu_name,
-            creat_time=datetime.now(),
+            create_time=datetime.now(),
             last_modify_user=stu_info_table.stu_name,
             last_modify_time=datetime.now(),
             is_del=0
@@ -176,7 +176,7 @@ def score_info_add():
         db.session.add(score_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-        redirect(url_for('admin.stu_info_view.stu_info_display'))
+        redirect(url_for('admin.stu_info_display'))
     return render_template("/admin/stu_info/stu_add_score_info.html", title = "蜻蜓教育💯学生个人信息", score_form = score_form)
 
 
@@ -201,46 +201,29 @@ cursor = connect.cursor()
 # 编辑/更新基本信息
 @admin.route("/stu_info_function/edit_basic_info", methods = ["GET", "POST"])
 # @user_login_req
-def basic_info_edit():
+def basic_info_edit(id):
     edit_form = stu_basic_info_add()
 
     if edit_form.validate_on_submit():
         # 获取学生姓名，学生学校，学生初始年级
         stu_name = request.form.get("stu_name")
         stu_school = request.form.get("stu_school")
-        creat_class = request.form.get("creat_class")
-        creator = '待定',
-        creat_time = datetime.now(),
-        last_modify_user = stu_info_table.stu_name,
-        last_modify_time = datetime.now(),
+        create_class = request.form.get("create_class")
+        last_modify_user = stu_name,
+        last_modify_time = datetime.now()
 
-        # 用sql语句实现操作数据库
-        # TO DO 需要获取登陆的同学的ID信息
-        sql_data = "UPDATE stu_info_table SET  \
-                    stu_name = %s,  \
-                    stu_school = %s,  \
-                    creat_class = %s,  \
-                    creator = %s,  \
-                    creat_time = %s, \
-                    last_modify_user = %s, \
-                    last_modify_time = %s, \
-                    WHERE id = %s " % (
-            stu_name,
-            stu_school,
-            creat_class,
-            creator,
-            creat_time,
-            last_modify_user,
-            last_modify_time,
-            0
-        )
+        # 获取特定id对应的数据库数据
+        filter_by_id = stu_info_table.query.filter_by(id=id, is_del=0).first()
+        # 修改数据库中特定数据
+        filter_by_id.stu_name = stu_name
+        filter_by_id.stu_school = stu_school
+        filter_by_id.create_class = create_class
+        filter_by_id.last_modify_user = last_modify_user
+        filter_by_id.last_modify_time = last_modify_time
 
         try:
-            # 使用execute()方法执行SQL语句
-            # 没有id，暂时先写死
-            cursor.execute(sql_data)
             # 提交到数据库执行
-            connect.commit()
+            db.session.commit()
         except:
             flash("修改失败，请重试！", "ok")
             redirect(url_for(admin.stu_info_view.score_info_edit))
@@ -252,7 +235,7 @@ def basic_info_edit():
 # 编辑/更新成绩信息
 @admin.route("/stu_info_function/edit_score_info", methods = ["GET", "POST"])
 # @user_login_req
-def score_info_edit():
+def score_info_edit(id):
     edit_form = stu_score_info_add()
     if edit_form.validate_on_submit():
         # 获取考试成绩，考试所属年级，考试类型，考试单元名称
@@ -260,40 +243,22 @@ def score_info_edit():
         score_exclass = request.form.get("score_exclass")
         score_exsort = request.form.get("score_exsort")
         exam_info = request.form.get("exam_info")
-        creator='待定',
-        creat_time=datetime.now(),
         last_modify_user=stu_info_table.stu_name,
         last_modify_time=datetime.now(),
 
-        # 用sql语句实现操作数据库
-        # TO DO 需要获取登陆的同学的ID信息
-        sql_data = "UPDATE stu_score_table SET  \
-                    score_offline = %s,  \
-                    score_exclass = %s,  \
-                    score_exsort = %s,  \
-                    exam_info = %s,  \
-                    creator = %s,  \
-                    creat_time = %s, \
-                    last_modify_user = %s, \
-                    last_modify_time = %s, \
-                    WHERE id = %s " % (
-                    score_offline,
-                    score_exclass,
-                    score_exsort,
-                    exam_info,
-                    creator,
-                    creat_time,
-                    last_modify_user,
-                    last_modify_time,
-                    0
-                    )
+        # 获取特定id对应的数据库数据
+        filter_by_id = stu_score_table.query.filter_by(id=id, is_del=0).first()
+        # 修改数据库中特定数据
+        filter_by_id.score_offline = score_offline
+        filter_by_id.score_exclass = score_exclass
+        filter_by_id.score_exsort = score_exsort
+        filter_by_id.exam_info = exam_info
+        filter_by_id.last_modify_user = last_modify_user
+        filter_by_id.last_modify_time = last_modify_time
 
         try:
-            # 使用execute()方法执行SQL语句
-            # 没有id，暂时先写死
-            cursor.execute(sql_data)
             # 提交到数据库执行
-            connect.commit()
+            db.session.commit()
         except:
             flash("修改失败，请重试！", "ok")
             redirect(url_for(admin.stu_info_view.score_info_edit))
@@ -310,59 +275,54 @@ def score_info_edit():
 updatetodo = 0
 
 # 显示基本信息
-@admin.route("/stu_info_function/stu_info_display1", methods = ['GET', 'POST'])
+@admin.route("/stu_info_function/basic_display", methods = ['GET', 'POST'])
 # uer_login_req
-def stu_info_display():
-    # 用sql语句实现操作数据库
-    # TO DO 需要获取登陆的同学的ID信息
-    sql_data = "SELECT * FROM stu_info_table WHERE id = %s "
+def stu_info_display(id):
+
+    # 获取特定id对应的数据库数据
+    filter_by_id = stu_info_table.query.filter_by(id=id, is_del=0).first()
     # 建立字典用于存储取出的信息
     stu_basic_info_dict = {}
 
     try:
-        # 使用execute()方法执行SQL语句
-        # 没有学生基本信息表id，暂时先写死
-        cursor.execute(sql_data, 0)
-        #  一次读取全部数据，如果管道内没有数据，则返回空元组或空列表
-        all_data = cursor.fetchall()
-        for row in all_data:
-            stu_name = row[1]
-            stu_school = row[2]
-            creat_class = row[3]
+        # 获取数据库特定数据
+        stu_name = filter_by_id.stu_name
+        stu_school = filter_by_id.stu_school
+        create_class = filter_by_id.create_class
+        # 数据存入字典
         stu_basic_info_dict['stu_name'] = stu_name
         stu_basic_info_dict['stu_school'] = stu_school
-        stu_basic_info_dict['creat_class'] = creat_class
-        stu_basic_info_add['stu_class'] = creat_class + updatetodo
+        stu_basic_info_dict['create_class'] = create_class
+        stu_basic_info_add['stu_class'] = create_class + updatetodo
 
     except:
         flash("没有相关信息，请录入！", "ok")
         redirect(url_for('admin.basic_info_add'))
-    # 关闭游标，数据库连接
-    cursor.close()
-    connect.close()
+
     return render_template("/admin/stu_info/stu_info_display.html", title = "蜻蜓教育💯学生个人信息", dict1 = stu_basic_info_dict)
 
 
 # 显示成绩信息
-@admin.route("/stu_info_function/stu_info_display2", methods = ['GET', 'POST'])
+@admin.route("/stu_info_function/score_display/<int:page>", methods = ['GET', 'POST'])
 # uer_login_req
-def stu_score_display():
-    # 用sql语句实现操作数据库
-    sql_data = "SELECT * FROM stu_score_table WHERE id = %s and stu_id = %s "
+def stu_score_display(page = None):
+    # 默认page初始值为None，永远先跳转到第一页
+    if page is None:
+        page = 1
+    # 每页一个考试信息，留出空间放考试的知识图谱、不足等相关信息
+    page_datas = stu_score_table.query.filter_by(is_del=0).paginate(page=page, per_page=1)
+    # 获取特定id对应的数据库数据
+    filter_by_id = stu_score_table.query.filter_by(id=id, is_del=0).first()
     # 建立字典用于存储取出的信息
     stu_score_info_dict = {}
 
     try:
-        # 使用execute()方法执行SQL语句
-        # 没有学生成绩表id和学生基本信息表id，暂时先写死
-        cursor.execute(sql_data, 0, 0)
-        #  一次读取全部数据，如果管道内没有数据，则返回空元组或空列表
-        all_data = cursor.fetchall()
-        for row in all_data:
-            score_offline = row[2]
-            score_exclass = row[3]
-            score_exsort = row[4]
-            exam_info = row[5]
+        # 获取数据库特定数据
+        score_offline = filter_by_id.score_offline
+        score_exclass = filter_by_id.score_exclass
+        score_exsort = filter_by_id.score_exsort
+        exam_info = filter_by_id.exam_info
+        # 数据存入字典
         stu_score_info_dict['score_offline'] = score_offline
         stu_score_info_dict['score_exclass'] = score_exclass
         stu_score_info_dict['score_exsort'] = score_exsort
@@ -371,11 +331,19 @@ def stu_score_display():
     except:
         flash("没有相关信息，请录入！", "ok")
         redirect(url_for('admin.score_info_add'))
-    # 关闭游标，数据库连接
-    cursor.close()
-    connect.close()
-    return render_template("/admin/stu_info/stu_score_display.html", title = "蜻蜓教育💯学生个人信息", dict2 = stu_score_info_dict)
 
+    return render_template("/admin/stu_info/stu_score_display.html", title = "蜻蜓教育💯学生个人信息", dict2 = stu_score_info_dict, page_data =page_datas)
+
+
+# 学生列表
+@admin.route("/stu_info_function/info_list/<int:page>", methods = ["GET", "POST"])
+def stu_info_list(page = None):
+    # 默认page初始值为None，永远先跳转到第一页
+    if page is None:
+        page = 1
+    page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+
+    return render_template("/admin/stu_info/stu_info_list.html", title = "学生信息列表", page_data = page_datas)
 
 # @admin.route("/test1")
 # def test1():
