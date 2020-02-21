@@ -223,7 +223,6 @@ class stu_score_info_add(FlaskForm):
         label = 'exam_info',
         # 验证器
         validators = [
-            DataRequired("单元名称不能为空哦！"),
             Length(0, 30, message="单元名称长度应为0-30个字哦！")
         ],
         description = "单元名称",
