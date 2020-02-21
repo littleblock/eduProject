@@ -10,7 +10,7 @@ from datetime import datetime
 # 生成数据表后，记得再重新注释上
 
 
-'''
+
 from flask import Flask
 from flask_sqlalchemy import SQLAlchemy
 
@@ -19,16 +19,16 @@ app = Flask(__name__)
 app.debug = True
 # 数据库配置
 # qixuanye的本地数据库
-app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
+#app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:root@127.0.0.1:3306/edu"
 
-# whc的本地数据库
-# app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
+#whc的本地数据库
+app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306/edu"
 # yj的本地数据库
 # app.config['SQLALCHEMY_DATABASE_URI'] = "mysql://root:yujian@127.0.0.1:3306/edu"
 
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
-'''
+
 
 
 # 班级表
@@ -641,9 +641,8 @@ class question_knowledge_relation(db.Model):
 
 
 
-# if __name__ == "__main__":
-#
-#     db.drop_all()
-#     db.create_all()
+#if __name__ == "__main__":
+    #db.drop_all()
+    #db.create_all()
 
 

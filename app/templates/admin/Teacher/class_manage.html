@@ -30,10 +30,9 @@ Time: 2020/02/12
             <td>{{ v.stu_name }}</td>
             <td>{{ v.stu_class }}</td>
             <td>{{ v.stu_school }}</td>
-            <td>{{ v.school}}</td>
             <form method="post">
             <td>
-            <a href="{{url_for('admin.teacher_type_edit', id = v.teacher_id)}}"  class="btn btn-sm btn-outline-warning">修改</a>
+            <a href="{{url_for('admin.class_edit', id = v.id)}}"  class="btn btn-sm btn-outline-warning">修改</a>
             </td>
             </form>
         </tr>
@@ -47,7 +46,7 @@ Time: 2020/02/12
 <!-- 列表栏点击效果显示 -->
 <script>
     $(document).ready(function () {
-        $("#d2").addClass("active");
+        $("#e1").addClass("active");
     });
 </script>
 {% endblock %}

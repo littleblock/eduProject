@@ -127,7 +127,7 @@ def basic_info_add():
         db.session.add(stu_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-        redirect(url_for('admin.stu_info_display', id=id))
+        #redirect(url_for('admin.stu_info_display', id=id))
     return render_template("/admin/stu_info/stu_add_basic_info.html", title = "蜻蜓教育💯学生个人信息", basic_form = basic_form)
 
 

@@ -6,6 +6,7 @@ import string
 import random
 import uuid
 import xlrd
+import sqlalchemy
 from . import admin
 from app.models import wrong_ques_table, wrong_ques_review, teacher_info,teacher_evaluation,classroom,stu_info_table,db
 from datetime import datetime
@@ -149,10 +150,10 @@ def class_stu_list(page = None):
 
 @admin.route("/class_edit/<id>", methods = ["GET", "POST"])
 def class_edit(id):
-    teach = teacher_info.query.filter(teacher_info.is_del == 0)
+    teach = teacher_info.query.filter_by(is_del=0)
     return render_template("/admin/Teacher/class_edit.html", title="选择教课老师",teacher = teach, stu_id = id)
 
-@admin.route("/class_sure/", methods = ["GET", "POST"])
+@admin.route("/class_sure", methods = ["GET", "POST"])
 def class_sure():
     id_stu = request.args.get("student_id")
     id_teacher = request.args.get("teacher_id")
@@ -168,7 +169,7 @@ def class_sure():
     db.session.add(clas)
     db.session.commit()
     page = 1
-    page_datas = teacher_info.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+    page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
     return render_template("/admin/Teacher/class_manage.html", title = "班级管理", page_data = page_datas)
 
 @admin.route("/read_teachinfo_excel/", methods = ["GET", "POST"])
@@ -207,3 +208,37 @@ def read_teachinfo_excel():
         db.session.add(info)
         db.session.commit()
     return "ye"
+
+@admin.route("/demo", methods = ["GET", "POST"])
+def demo():
+ return render_template("/admin/demo.html", title = "班级管理")
+
+@admin.route("/class_list/<int:page>", methods = ["GET", "POST"])
+def class_list(page = None):
+    if page is None:
+        page = 1
+    page_datas = classroom.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+
+    return render_template("/admin/Teacher/class_manage.html", title = "班级", page_data = page_datas)
+
+@admin.route("/teacher_class_list/<id>", methods = ["GET", "POST"])
+def teacher_class_list(id):
+    students_id = classroom.query.filter_by(teacher_id=id)
+    q_1 = []
+
+    for a in students_id:
+        q_2 = stu_info_table.query.filter_by(id=a.student_id)
+        for b in q_2:
+            a = b
+            q_1.append(b)
+            break
+    return render_template("/admin/Teacher/teacher_class.html", title = "老师班级", student_list = q_1)
+
+@admin.route("/delete_student/<id>", methods = ["GET", "POST"])
+def delete_student(id):
+    class1 = classroom.query.filter_by(student_id=id).first()
+    db.session.delete(class1)
+    db.session.commit()
+    page = 1
+    page_datas = teacher_info.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+    return render_template("/admin/Teacher/info_list.html", title="班级", page_data=page_datas)

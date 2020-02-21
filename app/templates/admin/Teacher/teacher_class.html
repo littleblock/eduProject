@@ -16,29 +16,27 @@ Time: 2020/02/12
 {% endblock %}
 
 {% block content %}
-    <table class="table table-bordered">
+<table class="table table-bordered">
     <thead>
         <tr>
-            <th>老师姓名</th>
+            <th>学生姓名</th>
             <th>年纪</th>
             <th>学校</th>
-            <th>确定</th>
+            <th>移除</th>
         </tr>
     </thead>
-    {% for v in teacher %}
+    {% for v in student_list %}
         <tr>
-            <td>{{ v.name }}</td>
-            <td>{{ v.grade }}</td>
-            <td>{{ v.school }}</td>
+            <td>{{ v.stu_name }}</td>
+            <td>{{ v.stu_class }}</td>
+            <td>{{ v.stu_school }}</td>
             <td>
-                <form method = "post">
-                    <a href="{{url_for('admin.class_sure', teacher_id = v.teacher_id, student_id = stu_id)}}"  class="btn btn-sm btn-outline-warning">确定</a>
-                </form>
+             <a href="{{url_for('admin.delete_student', id = v.id)}}"  class="btn btn-sm btn-outline-warning">移除</a>
             </td>
         </tr>
     {% endfor %}
 </table>
-
+{{ pg.page(page_data, 'admin.info_list') }}
 {% endblock %}
 
 
@@ -46,7 +44,7 @@ Time: 2020/02/12
 <!-- 列表栏点击效果显示 -->
 <script>
     $(document).ready(function () {
-        $("#d2").addClass("active");
+        $("#e1").addClass("active");
     });
 </script>
 {% endblock %}
