@@ -9,6 +9,9 @@ Time: 2020/02/03
 {% block content %}
 
 <form method="post">
+    {% for msg in get_flashed_messages(category_filter=['ok']) %}
+    <p style="color: red">{{ msg }}</p>
+    {% endfor %}
     <div class="form-group">
         <label>学段类别</label>
         {{ form.period_name }}
