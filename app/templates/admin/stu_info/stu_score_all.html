@@ -1,0 +1,45 @@
+{% extends "admin/layout.html" %}
+{% import "admin/page.html" as pg %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class = tit>成绩</th>
+            <th class = tit>考试所属年级</th>
+            <th class = tit>考试类型</th>
+            <th class = tit>考试名称</th>
+
+        </tr>
+    </thead>
+    {% for v in page_data.items %}
+        <tr>
+            <td>{{ v.score_offline }}</td>
+            <td>{{ v.score_exclass }}</td>
+            <td>{{ v.score_exsort }}</td>
+            <td>{{ v.exam_info }}</td>
+
+        </tr>
+    {% endfor %}
+</table>
+{{ pg.page(page_data, 'admin.stu_info_list') }}
+{% endblock %}
+
+
+{% block js %}
+<!-- 列表栏点击效果显示 -->
+<script>
+    $(document).ready(function () {
+        $("#d2").addClass("active");
+    });
+</script>
+{% endblock %}

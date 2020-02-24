@@ -189,7 +189,7 @@ class wrong_ques_review(db.Model):
 # 学生基础信息表模型
 class stu_info_table(db.Model):
     # 定义表名
-    __tablename__ = 'stu_basic_info'
+    __tablename__ = 'stu_info_table'
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生姓名
@@ -215,7 +215,7 @@ class stu_info_table(db.Model):
     # 该条记录是否可用，默认为0，可用
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 学生成绩信息表外键连接
-    score_tables = db.relationship('stu_score_table', backref = 'stu_basic_table')
+    score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
 
     def __repr__(self):
         return "<stu_info_table %r>" % self.name
@@ -228,7 +228,7 @@ class stu_score_table(db.Model):
     # 主键
     id = db.Column(db.BigInteger, primary_key=True, autoincrement=True)
     # 学生编号，与上表的id对应，作为上表外键
-    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_basic_info.id'), nullable=False)
+    stu_id = db.Column(db.BigInteger, db.ForeignKey('stu_info_table.id'), nullable=False)
     # 学生录入的考试成绩
     score_offline = db.Column(db.Integer, nullable=False)
     # 考试所属年级
@@ -641,9 +641,9 @@ class question_knowledge_relation(db.Model):
 
 
 
-if __name__ == "__main__":
+# if __name__ == "__main__":
 #
-# db.drop_all()
-    db.create_all()
+#     db.drop_all()
+#     db.create_all()
 
 

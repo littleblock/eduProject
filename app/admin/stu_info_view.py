@@ -127,7 +127,7 @@ def basic_info_add():
         db.session.add(stu_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-        redirect(url_for('admin.stu_info_display'))
+        #redirect(url_for('admin.stu_info_display', id=id))
     return render_template("/admin/stu_info/stu_add_basic_info.html", title = "蜻蜓教育💯学生个人信息", basic_form = basic_form)
 
 
@@ -147,13 +147,12 @@ def save_photo(photo, form):
     form.photo.data.save(STU_PROFILE_FOLDER + "/" + photo)
 
 
-
+# TO DO 没有登录模块，暂时没有登录的学生的id
 # 录入考试成绩，考试所属年级，考试类型，考试单元名称
-@admin.route("/stu_info_function/add_score_info", methods = ['GET', 'POST'])
+@admin.route("/stu_info_function/add_score_info/<int:id>", methods = ['GET', 'POST'])
 # uer_login_req
-def score_info_add():
+def score_info_add(id):
     score_form = stu_score_info_add()
-    print(score_form.validate_on_submit())
     if score_form.validate_on_submit():
         data = score_form.data
         # 获取考试成绩，考试所属年级，考试类型，考试单元名称
@@ -161,23 +160,31 @@ def score_info_add():
         score_exclass = data["score_exclass"]
         score_exsort = data["score_exsort"]
         exam_info = data["exam_info"]
+
+        # 获取特定id对应的数据库数据
+        filter_by_id = stu_info_table.query.filter_by(id=id, is_del=0).first()
+        stu_id = filter_by_id.id
+        stu_name = filter_by_id.stu_name
+
         # 保存stu_score_table数据
         score_info_list = stu_score_table(
+            stu_id= stu_id,
             score_offline=score_offline,
             score_exclass=score_exclass,
             score_exsort=score_exsort,
             exam_info=exam_info,
-            creator=stu_info_table.stu_name,
+            creator=stu_name,
             create_time=datetime.now(),
-            last_modify_user=stu_info_table.stu_name,
+            last_modify_user=stu_name,
             last_modify_time=datetime.now(),
             is_del=0
         )
         db.session.add(score_info_list)
         db.session.commit()
         flash("保存成功！", "ok")
-        redirect(url_for('admin.stu_info_display'))
+        redirect(url_for('admin.stu_info_display', id=id))
     return render_template("/admin/stu_info/stu_add_score_info.html", title = "蜻蜓教育💯学生个人信息", score_form = score_form)
+
 
 
 '''
@@ -199,7 +206,7 @@ cursor = connect.cursor()
 '''
 
 # 编辑/更新基本信息
-@admin.route("/stu_info_function/edit_basic_info", methods = ["GET", "POST"])
+@admin.route("/stu_info_function/edit_basic_info/<int:id>", methods = ["GET", "POST"])
 # @user_login_req
 def basic_info_edit(id):
     edit_form = stu_basic_info_add()
@@ -233,7 +240,7 @@ def basic_info_edit(id):
 
 
 # 编辑/更新成绩信息
-@admin.route("/stu_info_function/edit_score_info", methods = ["GET", "POST"])
+@admin.route("/stu_info_function/edit_score_info/<int:id>", methods = ["GET", "POST"])
 # @user_login_req
 def score_info_edit(id):
     edit_form = stu_score_info_add()
@@ -275,7 +282,7 @@ def score_info_edit(id):
 updatetodo = 0
 
 # 显示基本信息
-@admin.route("/stu_info_function/basic_display", methods = ['GET', 'POST'])
+@admin.route("/stu_info_function/basic_display/<int:id>", methods = ['GET', 'POST'])
 # uer_login_req
 def stu_info_display(id):
 
@@ -302,15 +309,11 @@ def stu_info_display(id):
     return render_template("/admin/stu_info/stu_info_display.html", title = "蜻蜓教育💯学生个人信息", dict1 = stu_basic_info_dict)
 
 
-# 显示成绩信息
-@admin.route("/stu_info_function/score_display/<int:page>", methods = ['GET', 'POST'])
+# 显示单次成绩信息,id为单次成绩的id
+@admin.route("/stu_info_function/score_display/<int:id>", methods = ['GET', 'POST'])
 # uer_login_req
-def stu_score_display(page = None):
-    # 默认page初始值为None，永远先跳转到第一页
-    if page is None:
-        page = 1
-    # 每页一个考试信息，留出空间放考试的知识图谱、不足等相关信息
-    page_datas = stu_score_table.query.filter_by(is_del=0).paginate(page=page, per_page=1)
+def stu_score_display(id):
+
     # 获取特定id对应的数据库数据
     filter_by_id = stu_score_table.query.filter_by(id=id, is_del=0).first()
     # 建立字典用于存储取出的信息
@@ -330,9 +333,9 @@ def stu_score_display(page = None):
 
     except:
         flash("没有相关信息，请录入！", "ok")
-        redirect(url_for('admin.score_info_add'))
+        redirect(url_for('admin.score_info_add', id=id))
 
-    return render_template("/admin/stu_info/stu_score_display.html", title = "蜻蜓教育💯学生个人信息", dict2 = stu_score_info_dict, page_data =page_datas)
+    return render_template("/admin/stu_info/stu_score_display.html", title = "蜻蜓教育💯学生个人信息", dict2 = stu_score_info_dict)
 
 
 # 学生列表
@@ -344,6 +347,21 @@ def stu_info_list(page = None):
     page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
 
     return render_template("/admin/stu_info/stu_info_list.html", title = "学生信息列表", page_data = page_datas)
+
+
+# 成绩总览
+@admin.route("/stu_info_function/score_all/<int:page>", methods = ["GET", "POST"])
+def stu_score_list(page = None):
+    # 默认page初始值为None，永远先跳转到第一页
+    if page is None:
+        page = 1
+    page_datas = stu_score_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
+
+    # 此处应为多次成绩折线图
+
+
+    return render_template("/admin/stu_info/stu_score_all.html", title = "学生成绩列表", page_data = page_datas)
+
 
 # @admin.route("/test1")
 # def test1():

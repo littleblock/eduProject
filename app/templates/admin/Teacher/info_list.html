@@ -45,6 +45,7 @@ Time: 2020/02/12
             <th class = tit>所学专业</th>
             <th class = tit>毕业学校</th>
             <th class = tit>有无家教经验</th>
+            <th class = tit> 班级</th>
             <th class = tit>创建人</th>
             <th class = tit>创建时间</th>
             <th class = tit>分类修改</th>
@@ -57,11 +58,14 @@ Time: 2020/02/12
             <td>{{ v.major }}</td>
             <td>{{ v.school}}</td>
             <td>{{ v.experience}}</td>
+            <td>
+               <a href="{{url_for('admin.teacher_class_list', id = v.teacher_id)}}"  class="btn btn-sm btn-outline-warning">班级</a>
+            </td>
             <td>{{ v.creator }}</td>
             <td>{{ v.create_time }}</td>
             <form method="post">
             <td>
-            <a href="{{url_for('admin.teacher_type_edit', id = v.teacher_id)}}"  class="btn btn-sm btn-outline-warning">修改</a>
+             <a href="{{url_for('admin.teacher_type_edit', id = v.teacher_id)}}"  class="btn btn-sm btn-outline-warning">修改</a>
             </td>
             </form>
         </tr>
