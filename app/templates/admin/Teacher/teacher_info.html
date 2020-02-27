@@ -22,15 +22,12 @@
         background-position: center 0;
     }
 </style>
-<link href="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/css/bootstrap.min.css" rel="stylesheet">
-    <script src="https://cdn.staticfile.org/jquery/2.1.1/jquery.min.js"></script>
-    <script src="https://cdn.staticfile.org/twitter-bootstrap/3.3.7/js/bootstrap.min.js"></script>
 
 <form class = "backi" method="post" enctype="multipart/form-data">
     {% for msg in get_flashed_messages(category_filter=['ok']) %}
     <p style="color: red">{{ msg }}</p>
     {% endfor %}
-    <img src="/static/upload/touxiang.jpg" height="130px">
+    <img src="../../../static/uploads/touxiang.jpg" height="130px">
     <div class="form-group">
         <label class="tit">上传头像</label>
         {{ form.photo }}

@@ -29,7 +29,7 @@ Time: 2020/01/31
         <!-- 列表菜单栏-->
         {% include "admin/menus.html" %}
         <!-- 内容栏-->
-        <div class="col-md-10">
+        <div class="col-md-9">
             <div class="card">
                 <div class="card-header">{{ title }}</div>
                 <div class="card-body">
@@ -43,10 +43,13 @@ Time: 2020/01/31
 
 <!-- bootstrap固定写法 -->
 <!-- jQuery (Bootstrap 的所有 JavaScript 插件都依赖 jQuery，所以必须放在前边) -->
-<script src="{{ url_for('static', filename='js/jquery.slim.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/jquery.min.js') }}"></script>
 <script src="{{ url_for('static', filename='js/popper.min.js') }}"></script>
 <!-- 加载 Bootstrap 的所有 JavaScript 插件。你也可以根据需要只加载单个插件。 -->
 <script src="{{ url_for('static', filename='js/bootstrap.min.js') }}"></script>
+<!-- 模板中的js-->
+<script src="{{ url_for('static', filename='js/perfect-scrollbar.min.js') }}"></script>
+<script src="{{ url_for('static', filename='js/main.min.js') }}"></script>
 <!-- 图片占位符 -->
 <script src="{{ url_for('static', filename='js/holder.min.js') }}"></script>
 
