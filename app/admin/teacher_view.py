@@ -19,12 +19,16 @@ import base64
 UPLOAD_FOLDER = os.path.join(os.path.dirname(os.path.dirname(__file__)), "uploads")
 # 教师头像目录
 TEACHER_PHOTO_FOLDER = os.path.join(UPLOAD_FOLDER, "teacher_photo")
+QUESTION_PHOTO_FOLDER = os.path.join(UPLOAD_FOLDER,"question_photo")
+IDENTITY_PHOTO = os.path.join(UPLOAD_FOLDER,"identity_question_photo")
+EXCEL_FILE = os.path.join(UPLOAD_FOLDER,"excel_file")
 ALLOWED_EXTENSIONS = set(['txt', 'pdf', 'png', 'jpg', 'jpeg', 'gif'])
 Basic_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg'
 grade = ["大一","大二","大三","大四","研一","研二","研三"]
 adv_grade = ["一年级", "二年级", "三年级", "四年级", "五年级" , "六年级", "初一", "初二" , "初三" , "高一" , "高二" , "高三"]
 model = ["实数与不等式","函数","简单平面几何","圆","相似与全等较难问题","统计概率","全部擅长"]
 basedir = os.path.abspath(os.path.dirname(__file__))
+CUT_ID = ""
 
 
 def allowed_file(filename):
@@ -172,42 +176,50 @@ def class_sure():
     page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
     return render_template("/admin/Teacher/class_manage.html", title = "班级管理", page_data = page_datas)
 
-@admin.route("/read_teachinfo_excel/", methods = ["GET", "POST"])
+@admin.route("read_teachinfo_excel/", methods = ["GET", "POST"])
 def read_teachinfo_excel():
-    wb = xlrd.open_workbook(filename=r"C:\Users\whc\Desktop\线上家教个人信息.xls")  # 打开文件
-    sheet = wb.sheet_by_name("Sheet1")
-    sheet_name = sheet.col_values(0)
-    sheet_grade = sheet.col_values(4)
-    sheet_major = sheet.col_values(3)
-    sheet_school = sheet.col_values(2)
-    sheet_chat = sheet.col_values(1)
-    sheet_adv_grade = sheet.col_values(5)
-    sheet_adv_model = sheet.col_values(6)
-    sheet_experience = sheet.col_values(7)
-    sheet_introduce = sheet.col_values(8)
+    if request.method == 'POST':
+        file = request.args.get("file")
+        if not os.path.exists(EXCEL_FILE):
+            os.makedirs(EXCEL_FILE)
+        # 保存文件
+        file.save(EXCEL_FILE + "/" + file)
+        wb = xlrd.open_workbook(filename=EXCEL_FILE + "/" + file)  # 打开文件
+        sheet = wb.sheet_by_name("Sheet1")
+        sheet_name = sheet.col_values(0)
+        sheet_grade = sheet.col_values(4)
+        sheet_major = sheet.col_values(3)
+        sheet_school = sheet.col_values(2)
+        sheet_chat = sheet.col_values(1)
+        sheet_adv_grade = sheet.col_values(5)
+        sheet_adv_model = sheet.col_values(6)
+        sheet_experience = sheet.col_values(7)
+        sheet_introduce = sheet.col_values(8)
 
-    for col in range(1,sheet.nrows):
-        info = teacher_info(
-            name=sheet_name[col],
-            head_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg',
-            chat=sheet_chat[col],
-            school=sheet_school[col],
-            major=sheet_major[col],
-            introduce=sheet_introduce[col],
-            adv_model=sheet_adv_model[col],
-            adv_grade=sheet_adv_grade[col],
-            classify = 0,
-            grade=sheet_grade[col],
-            experience=sheet_experience[col],
-            creator="whc",  # 写死先
-            create_time=datetime.now(),
-            last_modify_user="whc",  # 写死先
-            last_modify_time=datetime.now(),
-            is_del=0,
-        )
-        db.session.add(info)
-        db.session.commit()
-    return "ye"
+        for col in range(1,sheet.nrows):
+            info = teacher_info(
+                name=sheet_name[col],
+                head_photo=r'C:\Users\whc\PycharmProjects\eduProject\app\upload\touxiang.jpg',
+                chat=sheet_chat[col],
+                school=sheet_school[col],
+                major=sheet_major[col],
+                introduce=sheet_introduce[col],
+                adv_model=sheet_adv_model[col],
+                adv_grade=sheet_adv_grade[col],
+                classify = 0,
+                grade=sheet_grade[col],
+                experience=sheet_experience[col],
+                creator="whc",  # 写死先
+                create_time=datetime.now(),
+                last_modify_user="whc",  # 写死先
+                last_modify_time=datetime.now(),
+                is_del=0,
+            )
+            db.session.add(info)
+            db.session.commit()
+            page = 1
+            page_datas = stu_info_table.query.filter_by(is_del=0).paginate(page=page, per_page=5)
+    return render_template("/admin/Teacher/info_list.html", title = "老师信息列表", page_data = page_datas)
 
 @admin.route("/demo", methods = ["GET", "POST"])
 def demo():
@@ -242,3 +254,31 @@ def delete_student(id):
     page = 1
     page_datas = teacher_info.query.filter_by(is_del=0).paginate(page = page, per_page = 5)
     return render_template("/admin/Teacher/info_list.html", title="班级", page_data=page_datas)
+
+@admin.route("cut",methods = ["GET","POST"])
+def cut():
+    global CUT_ID
+    p = CUT_ID
+    if request.method == 'POST':
+        form = request.files.get('img')
+        photo_name = change_name(form.filename)
+        if not os.path.exists(IDENTITY_PHOTO):
+            os.makedirs(IDENTITY_PHOTO)
+        form.save(IDENTITY_PHOTO+"\\" + photo_name)
+    return render_template('/admin/Teacher/cut_picture.html', pic=p)
+
+@admin.route("compress/",methods = ["GET","POST"])
+def compress():
+    # 上传图片
+        if request.method == 'POST':
+            form = request.files.get('file')
+            form.filename = secure_filename(form.filename)
+            photo_name = change_name(form.filename)
+            if not os.path.exists(QUESTION_PHOTO_FOLDER):
+                os.makedirs(QUESTION_PHOTO_FOLDER)
+            global CUT_ID
+            CUT_ID = photo_name
+            form.save(QUESTION_PHOTO_FOLDER + "\\" + photo_name)
+
+        return render_template("/admin/Teacher/compress.html")
+

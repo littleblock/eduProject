@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>测试截取保存或打印</title>
+    <script type="text/javascript" src="../../../static/js/jquery-2.1.0.js"></script>
+    <script type="text/javascript" src="../../../static/js/html2canvas.js"></script>
+    <script type="text/javascript" src="../../../static/js/jQuery.print.js"></script>
+    <script type="text/javascript" src="../../../static/js/jcanvas.min.js"></script>
+    <script type="text/javascript" src="../../../static/js/screenshotsPrint.js"></script>
+    <style>
+        body, html {
+            width: 100%;
+            height: 100%;
+        }
+        .print {
+            position: relative;
+            z-index: 100;
+        }
+        h1 {
+            color: orangered;
+        }
+        h2 {
+            color: darkblue;
+        }
+        h2 {
+            color: forestgreen;
+        }
+        #bg_canvas {
+            position: absolute;
+            z-index: 500;
+            left: 0;
+            top: 0;
+        }
+    </style>
+</head>
+<body>
+<button class="print">开始截图</button>
+<div>
+    <img src="../../../static/uploads/20200303232216b3e9da04ea7d4af29f3852f5c526fe59.jpg" height="500" width="400"/>
+<!--    <img src="../../../uploads/question_photo/20200303232216b3e9da04ea7d4af29f3852f5c526fe59.jpg" height="285" width="223"/>-->
+</div>
+<!-- 用于画选取框的canvas -->
+<canvas id="bg_canvas" width="100%" height="100%" />
+<script>
+    $(function(){
+        var clientWidth = document.documentElement.clientWidth || document.body.clientWidth
+        var clientHeight = document.documentElement.clientHeight || document.body.clientHeight
+        // 更新canvas宽高
+        $("#bg_canvas").attr("width", clientWidth);
+        $("#bg_canvas").attr("height", clientHeight);
+
+        $("#bg_canvas").hide();
+        $(".print").click(function(){
+            $("#bg_canvas").show()
+            alert('现在你可以使用鼠标拖拽选取打印区域，松开后完成')
+            //调用选取截屏
+            clipScreenshots("bg_canvas");
+        });
+
+
+    });
+</script>
+</body>
+</html>
+
