@@ -3,7 +3,7 @@
 # @Time: 2020/1/21 19:53
 
 # 配置好app中的__init.py__ 后，在这里导入db
-#from app import db
+from app import db
 from datetime import datetime
 
 # 若要生成数据表，将上面的from app import db注释掉，将下面的注释和最后的if __name__ == '__main__'部分注释去掉
@@ -29,7 +29,61 @@ app.config["SQLALCHEMY_DATABASE_URI"] = "mysql://root:newpassword@127.0.0.1:3306
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = True
 db = SQLAlchemy(app)
 
+#每日计划表
+class plantable(db.Model):
+    __tablename__ = 'plantable'
+    #id
+    id = db.Column(db.Integer, primary_key = True)
+    #学生id
+    student_id = db.Column(db.BigInteger, nullable = False)
+    #老师id
+    teacher_id = db.Column(db.Integer,nullable = False)
+    #日期
+    daytime = db.Column(db.DateTime,nullable = False)
+    #每个单个计划时间
+    plan_time = db.Column(db.String(200),nullable = True)
+    #每个单个计划内容
+    plan_content = db.Column(db.String(200),nullable = True)
+    #每个计划完成情况
+    performance = db.Column(db.String(200),nullable = False)
+    #未完成原因
+    reason = db.Column(db.String(200),nullable = True)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
 
+    def __repr__(self):
+        return "<plantable %r>" % self.name
+
+#计划关系表
+class plan_relation(db.Model):
+    __tablename = 'plan_relation'
+    #id
+    id = db.Column(db.Integer,primary_key = True)
+    #学生id
+    student_id = db.Column(db.BigInteger,db.ForeignKey("stu_info_table.id"))
+    #计划表id
+    plan_id = db.Column(db.Integer,nullable = False)
+    # 创建人
+    creator = db.Column(db.String(128), nullable=False)
+    # 创建时间
+    create_time = db.Column(db.DateTime, default=datetime.now)
+    # 最后修改人
+    last_modify_user = db.Column(db.String(128), nullable=False)
+    # 最后修改时间
+    last_modify_time = db.Column(db.DateTime, default=datetime.now)
+    # 该条记录是否可用，默认为0，可用
+    is_del = db.Column(db.SmallInteger, default=0, nullable=False)
+
+    def __repr__(self):
+        return "<plan_relation %r>" % self.name
 
 # 班级表
 class classroom(db.Model):
@@ -216,6 +270,8 @@ class stu_info_table(db.Model):
     is_del = db.Column(db.SmallInteger, default=0, nullable=False)
     # 学生成绩信息表外键连接
     score_tables = db.relationship('stu_score_table', backref = 'stu_info_table')
+    # 计划表外键链接
+    plan = db.relationship('plan_relation', backref='stu_info_table')
 
     def __repr__(self):
         return "<stu_info_table %r>" % self.name
@@ -637,13 +693,12 @@ class question_knowledge_relation(db.Model):
 
     def __repr__(self):
         return "<question_knowledge_relation %r>" % self.name
-
-
-
-'''
-if __name__ == "__main__":
 #
-#    db.drop_all()
-     db.create_all()
-'''
-
+#
+#
+#
+# if __name__ == "__main__":
+#
+#    #db.drop_all()
+#    db.create_all()
+#

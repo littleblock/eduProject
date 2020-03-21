@@ -1,0 +1,54 @@
+<!--
+Author: wanghaochen
+Time: 2020/02/12
+-->
+
+{% extends "PlanTeacher/layout.html" %}
+{% import "admin/page.html" as pg %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th>学生姓名</th>
+            <th>年纪</th>
+            <th>学校</th>
+            <th>学生今日计划</th>
+            <th>学生计划导入</th>
+        </tr>
+    </thead>
+    {% for v in student_list %}
+        <tr>
+            <td>{{ v.stu_name }}</td>
+            <td>{{ v.stu_class }}</td>
+            <td>{{ v.stu_school }}</td>
+            <td>
+                <a href="{{url_for('home.show_plan',id = v.id)}}"  class="btn btn-sm btn-outline-warning"> 当日计划 </a>
+            </td>
+            <td>
+             <a href="{{url_for('home.excel_plan', student_id = v.id, teacher_id = teacher)}}"  class="btn btn-sm btn-outline-warning">导入</a>
+            </td>
+        </tr>
+    {% endfor %}
+</table>
+{{ pg.page(page_data, 'home.stu_list') }}
+{% endblock %}
+
+
+{% block js %}
+<!-- 列表栏点击效果显示 -->
+<script>
+    $(document).ready(function () {
+        $("#a2").addClass("active");
+    });
+</script>
+{% endblock %}

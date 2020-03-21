@@ -1,0 +1,37 @@
+<!--
+Author: qixuanye
+Time: 2020/02/03
+后台菜单栏
+-->
+
+<div class="col-md-3">
+    <!--左侧导航-->
+    <div class="lyear-layout-container">
+        <!-- logo -->
+        <div id="logo" class="sidebar-header">
+            <a href="index.html"><img src="{{ url_for('static', filename='img/logo.png') }}" title="蜻蜓数学logo"
+                                      alt="蜻蜓数学"/></a>
+        </div>
+        <div class="lyear-layout-sidebar-scroll">
+
+            <nav class="sidebar-main">
+                <ul class="nav nav-drawer">
+                  <!-- 还未设计后台首页，暂时指向随意的一个页面 -->
+                    <li class="nav-item active"><a href="/admin/subject/list/1"><i class="mdi mdi-home"></i> 后台首页</a></li>
+                    <li class="nav-item nav-item-has-subnav">
+                        <a href="javascript:void(0)"><i class="mdi mdi-palette"></i> 知识图谱</a>
+                        <ul class="nav nav-subnav">
+                            <li><a id="a2" href="PlanTeacher/stu_list"
+                                   class="list-group-item list-group-item-action">学生列表</a></li>
+                        </ul>
+                    </li>
+            </nav>
+
+            <div class="sidebar-footer">
+                <p class="copyright">Copyright &copy; 2019-2020. 蜻蜓教学 All rights reserved. </p>
+            </div>
+        </div>
+
+        <!--End 左侧导航-->
+    </div>
+</div>

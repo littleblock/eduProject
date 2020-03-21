@@ -1,0 +1,85 @@
+<!--
+Author: wanghaochen
+Time: 2020/02/12
+-->
+
+{% extends "PlanTeacher/layout.html" %}
+
+{% block css %}
+<!-- 表格内容垂直居中 -->
+<style>
+    .tit{
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: large;
+        color: white;
+        background-color: #33cabb;
+        border-radius: 5px;
+        border-color: #00a0e9;
+        border-width: 200px;
+        border: 2px;
+    }
+    .tx{
+        width: 300px;
+        height: 40px;
+        font-family: "SFMono-Regular", Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+        font-size: medium;
+        color: #33cabb;
+        border-radius: 5px;
+        border-color: #00a0e9;
+        border-width: 200px;
+        border: 2px;
+    }
+    .table td, .table th {
+        vertical-align: middle;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<table class="table table-bordered">
+    <thead>
+        <tr>
+            <th class = tit>任务序号</th>
+            <th class = tit>完成时长</th>
+            <th class = tit>计划内容</th>
+            <th class = tit>是否完成</th>
+        </tr>
+    </thead>
+    {% for v in info %}
+        <tr>
+            <td>{{ v.number }}</td>
+            <td>{{ v.time }}</td>
+            <td>{{ v.content }}</td>
+            <td><input class="list" type="checkbox"></td>
+        </tr>
+    {% endfor %}
+</table>
+<h1 class = "tit">未完成原因</h1>
+<input type="textarea" class = "tx" solid id = "txt" value="未完成原因" ><br>
+<input type="submit" class = "tit" id = "clic"  value="提交">
+<script>
+    var sub = document.getElementById("clic");
+    sub.onclick = function () {
+        var url = "{{url_for('home.plan_complish')}}";
+        var checklist = document.getElementsByClassName("list");
+        var str = "";
+        for (var i = 0; i < checklist.length; i++) {
+                if (checklist[i].checked)
+                    str += "1 ";
+                else
+                    str += "0 ";
+        }
+        var tex = document.getElementById("txt").value;
+        var form = new FormData(); // FormData 对象
+        var planid = "{{id}}";
+        form.append("whetherDo", str); // 文件对象
+        form.append("reason", tex);
+        form.append("plan_id", planid);
+        xhr = new XMLHttpRequest();  // XMLHttpRequest 对象
+        xhr.open("post", url, true); //post方式，url为服务器请求地址，true 该参数规定请求是否异步处理。
+        xhr.send(form); //开始上传，发送form数据
+        window.location.replace("{{url_for('home.stu_list')}}");
+    }
+</script>
+{% endblock %}
+

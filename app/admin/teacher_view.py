@@ -179,12 +179,13 @@ def class_sure():
 @admin.route("read_teachinfo_excel/", methods = ["GET", "POST"])
 def read_teachinfo_excel():
     if request.method == 'POST':
-        file = request.args.get("file")
+        file = request.files.get("file")
         if not os.path.exists(EXCEL_FILE):
             os.makedirs(EXCEL_FILE)
         # 保存文件
-        file.save(EXCEL_FILE + "/" + file)
-        wb = xlrd.open_workbook(filename=EXCEL_FILE + "/" + file)  # 打开文件
+        filename = change_name(file.filename)
+        file.save(EXCEL_FILE + "\\" + filename)
+        wb = xlrd.open_workbook(filename=EXCEL_FILE + "\\" + filename)  # 打开文件
         sheet = wb.sheet_by_name("Sheet1")
         sheet_name = sheet.col_values(0)
         sheet_grade = sheet.col_values(4)
