@@ -187,9 +187,8 @@ function printClip(canvas, capture_x, capture_y, capture_width, capture_height) 
                 var xhr = new XMLHttpRequest();
                 xhr.open('POST', url, true);
                 xhr.send(fd);
-                window.location.replace("compress");
+                window.close()
                 }, 'image/png');});
-
     }else {
         downloadIamge(clipImgBase64)
     }
