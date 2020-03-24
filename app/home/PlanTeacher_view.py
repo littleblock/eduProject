@@ -118,7 +118,7 @@ def show_plan(id):
         info.append({'time':times[i],
                    'content':contents[i],
                    'number' : i})
-    return render_template("/PlanTeacher/show_plan.html",title="计划表展示",info = info,id = answer.id)
+    return render_template("/PlanTeacher/show_plan.html",title="计划表展示",info = info,day = datetime.now(), id = answer.id,stu_id = id)
 
 #今日计划完成度
 @home.route("/plan_complish/", methods = ["GET", "POST"])
@@ -131,3 +131,31 @@ def plan_complish():
         plan.performance = wetherdo
         plan.reason = reason
         db.session.commit()
+
+
+@home.route("/search/<id>", methods = ["GET", "POST"])
+def search(id):
+    # 获取GET数据，注意和获取POST数据的区别
+    keyword = request.args.get('keyword')
+    p = keyword.split('.')
+    year = datetime.now().year
+    month = p[0]
+    day = p[1]
+    d = datetime(int(year), int(month), int(day))
+    plans = plan_relation.query.filter_by(student_id=int(id))
+    answer = {}
+    for plan in plans:
+        p = plantable.query.filter_by(id=plan.plan_id).first()
+        if p.daytime.month == d.month and p.daytime.day == d.day:
+            answer = p
+            break
+    times = answer.plan_time.split(' ')[:-1]
+    contents = answer.plan_content.split(' ')[:-1]
+    numb = range(1, len(times) - 1)
+    form = []
+    info = []
+    for i in numb:
+        info.append({'time': times[i],
+                     'content': contents[i],
+                     'number': i})
+    return render_template("/PlanTeacher/show_plan.html", title="计划表展示", day = d, info=info, stu_id = id, id=answer.id)
